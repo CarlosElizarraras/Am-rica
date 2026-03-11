@@ -357,9 +357,9 @@ function sStats(){
   const s={};
   squad.forEach(p=>{s[p.id]={g:0,a:0,p:0};});
   matches.forEach(m=>{
-    (m.scorers||[]).forEach(id=>{if(id&&s[id])s[id].g++;});
-    (m.assisters||[]).forEach(id=>{if(id&&s[id])s[id].a++;});
-    (m.participants||[]).forEach(id=>{if(id&&s[id])s[id].p++;});
+    (m.scorers||[]).forEach(id=>{const k=+id;if(k&&s[k])s[k].g++;});
+    (m.assisters||[]).forEach(id=>{const k=+id;if(k&&s[k])s[k].a++;});
+    (m.participants||[]).forEach(id=>{const k=+id;if(k&&s[k])s[k].p++;});
   });
   return s;
 }
@@ -385,7 +385,7 @@ function renderDash(){
   // 7-stat bar
   const boxes=[
     {l:'PJ', v:ts.pj,  c:'#e8e8e8', sub:'Jugados'},
-    {l:'V',  v:ts.w,   c:'#4ade80', sub:`${ts.pts} pts`},
+    {l:'V',  v:ts.w,   c:'#4ade80', sub:'Victorias'},
     {l:'E',  v:ts.d,   c:'#facc15', sub:'Empates'},
     {l:'D',  v:ts.l,   c:'#f87171', sub:'Derrotas'},
     {l:'GF', v:ts.gf,  c:'#60A5FA', sub:'A favor'},
