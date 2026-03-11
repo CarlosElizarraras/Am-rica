@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Club América · Estadísticas</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#090909;color:#fff;font-family:'Bebas Neue',Impact,sans-serif;min-height:100vh}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#FFD700;border-radius:2px}
+.nb{background:none;border:none;cursor:pointer;padding:10px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:#555;transition:color .2s;border-bottom:2px solid transparent}
+.nb:hover{color:#FFD700}.nb.a{color:#FFD700;border-bottom-color:#FFD700}
+.card{background:#111;border:1px solid #1e1e1e;border-radius:12px;padding:20px}
+.gb{background:#FFD700;color:#000;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;transition:all .2s}
+.gb:hover{background:#FFC000;transform:translateY(-1px)}.gb:disabled{opacity:.4;cursor:default;transform:none}
+.ob{background:transparent;color:#FFD700;border:1px solid #333;padding:7px 14px;border-radius:7px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;transition:all .2s}
+.ob:hover{border-color:#FFD700}
+.rb{background:transparent;color:#EF4444;border:1px solid #2a1a1a;padding:7px 14px;border-radius:7px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:13px;transition:all .2s}
+.rb:hover{border-color:#EF4444}
+input,select,textarea{background:#181818;border:1px solid #2a2a2a;color:#fff;padding:9px 13px;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;width:100%;outline:none;transition:border .2s}
+input:focus,select:focus,textarea:focus{border-color:#FFD700}
+select option{background:#181818}
+label{font-family:'Inter',sans-serif;font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:5px}
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
+.md{background:#111;border:1px solid #2a2a2a;border-radius:16px;padding:28px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:9px 13px;font-family:'Inter',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#444;border-bottom:1px solid #1a1a1a}
+td{padding:11px 13px;border-bottom:1px solid #161616;font-family:'Inter',sans-serif;font-size:14px}
+tr:hover td{background:#141414}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:720px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.chip{background:#1a1a1a;border:1px solid #252525;border-radius:5px;padding:2px 9px;font-family:'Inter',sans-serif;font-size:12px;display:inline-block;margin:2px}
+.pb{height:3px;background:#1a1a1a;border-radius:2px;overflow:hidden;margin-top:5px}
+.pf{height:100%;border-radius:2px;transition:width .5s}
+.frow{display:flex;flex-direction:column;gap:14px}
+.fbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.section-title{font-size:16px;letter-spacing:2px;margin-bottom:18px;color:#FFD700}
+.empty{font-family:'Inter',sans-serif;font-size:14px;color:#333;text-align:center;padding:20px 0}
+.goal-row{display:flex;align-items:center;gap:8px;background:#161616;border-radius:7px;padding:7px 12px;margin-bottom:7px}
+.goal-num{font-size:16px;color:#444;min-width:18px}
+.goal-name{font-family:'Inter',sans-serif;font-size:13px;color:#ccc;flex:1}
+.goal-assist{font-family:'Inter',sans-serif;font-size:13px;color:#666}
+.del-btn{background:none;border:none;color:#EF4444;cursor:pointer;font-size:15px}
+.stat-big{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#444;min-width:26px}
+.match-score{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1}
+.match-label{font-family:'Inter',sans-serif;font-size:10px;margin-top:2px}
+.match-rival{font-family:'Inter',sans-serif;font-size:15px;color:#ddd;font-weight:500}
+.match-meta{font-family:'Inter',sans-serif;font-size:11px;color:#444;margin-top:2px}
+.match-notes{font-family:'Inter',sans-serif;font-size:12px;color:#555;margin-top:5px;font-style:italic}
+.match-actions{display:flex;gap:8px}
+.hero-label{font-family:'Inter',sans-serif;font-size:11px;color:#555;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.hero-val{font-family:'Bebas Neue',sans-serif;font-size:46px;line-height:1}
+.hero-sub{font-family:'Inter',sans-serif;font-size:11px;color:#555;margin-top:6px}
+.pos-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px}
+.pos-label{font-size:15px;letter-spacing:2px}
+.player-num{color:#444;font-family:'Bebas Neue',sans-serif;font-size:18px}
+.player-name{color:#ddd;font-weight:500}
+.career-stat{color:#666}
+.hidden{display:none}
+.sep{border-top:1px solid #1e1e1e;padding-top:14px;margin-top:4px}
+.sep-label{font-size:13px;letter-spacing:2px;color:#555;margin-bottom:12px}
+.header-wrap{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.logo-wrap{display:flex;align-items:center;gap:12px;padding:14px 0}
+.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#FFD700,#FF8C00);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo-name{font-size:20px;letter-spacing:3px;color:#FFD700}
+.logo-sub{font-family:'Inter',sans-serif;font-size:10px;color:#444;letter-spacing:2px;text-transform:uppercase}
+nav{display:flex}
+main{max-width:1180px;margin:0 auto;padding:26px 24px}
+.view{display:none}.view.active{display:block}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.page-title{font-size:26px;letter-spacing:3px;color:#FFD700}
+.comp-row{display:flex;justify-content:space-between;font-family:'Inter',sans-serif;font-size:13px;color:#777;padding:3px 0}
+.pj-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #161616}
+.pj-left{font-family:'Inter',sans-serif;font-size:13px;color:#ccc}
+.pj-date{font-family:'Inter',sans-serif;font-size:11px;color:#444}
+.pj-score{font-size:22px;text-align:right}
+.pj-result{font-family:'Inter',sans-serif;font-size:11px}
+.top-row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid #161616}
+.top-rank{font-size:20px;min-width:26px}
+.top-name{font-family:'Inter',sans-serif;font-size:14px;color:#ddd}
+.top-pos{font-family:'Inter',sans-serif;font-size:11px;color:#444}
+.top-val{font-family:'Bebas Neue',sans-serif;font-size:30px}
+.match-card{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.match-score-wrap{min-width:80px;text-align:center}
+.match-info{flex:1;min-width:160px}
+</style>
+</head>
+<body>
+
+<header style="background:#0e0e0e;border-bottom:1px solid #1a1a1a">
+  <div class="header-wrap">
+    <div class="logo-wrap">
+      <div class="logo-icon">🦅</div>
+      <div>
+        <div class="logo-name">CLUB AMÉRICA</div>
+        <div class="logo-sub">Sistema de Estadísticas</div>
+      </div>
+    </div>
+    <nav>
+      <button class="nb a" onclick="switchView('dashboard')">📊 Dashboard</button>
+      <button class="nb" onclick="switchView('matches')">⚽ Partidos</button>
+      <button class="nb" onclick="switchView('squad')">👥 Plantilla</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- DASHBOARD -->
+  <div id="view-dashboard" class="view active">
+    <div class="g4" style="margin-bottom:20px" id="hero-stats"></div>
+    <div class="g2" style="margin-bottom:20px">
+      <div class="card">
+        <div class="section-title">Rendimiento de la Temporada</div>
+        <div id="perf-bars"></div>
+        <div id="comp-breakdown"></div>
+      </div>
+      <div class="card">
+        <div class="section-title">Últimos Resultados</div>
+        <div id="recent-matches"></div>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="card">
+        <div class="section-title">⚽ Top Goleadores — Temporada</div>
+        <div id="top-scorers"></div>
+      </div>
+      <div class="card">
+        <div class="section-title">🎯 Top Asistidores — Temporada</div>
+        <div id="top-assists"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MATCHES -->
+  <div id="view-matches" class="view">
+    <div class="page-header">
+      <div class="page-title">Partidos de la Temporada</div>
+      <button class="gb" onclick="openAddMatch()">+ Registrar Partido</button>
+    </div>
+    <div id="matches-list"></div>
+  </div>
+
+  <!-- SQUAD -->
+  <div id="view-squad" class="view">
+    <div class="page-header">
+      <div class="page-title">Plantilla</div>
+      <button class="gb" onclick="openAddPlayer()">+ Añadir Jugador</button>
+    </div>
+    <div id="squad-list"></div>
+  </div>
+</main>
+
+<!-- MATCH MODAL -->
+<div id="match-modal" class="mo hidden">
+  <div class="md">
+    <div id="match-modal-title" style="font-size:20px;letter-spacing:2px;color:#FFD700;margin-bottom:22px">Registrar Partido</div>
+    <div class="frow">
+      <div class="g2">
+        <div><label>Fecha</label><input type="date" id="m-date"/></div>
+        <div><label>Rival</label><input type="text" id="m-rival" placeholder="Nombre del rival"/></div>
+      </div>
+      <div class="g3">
+        <div><label>Goles A Favor</label><input type="number" id="m-gf" min="0" placeholder="0"/></div>
+        <div><label>Goles En Contra</label><input type="number" id="m-ga" min="0" placeholder="0"/></div>
+        <div><label>Condición</label>
+          <select id="m-home">
+            <option value="1">🏠 Local</option>
+            <option value="0">✈️ Visita</option>
+          </select>
+        </div>
+      </div>
+      <div><label>Competición</label>
+        <select id="m-comp">
+          <option>Liga MX</option><option>Copa MX</option><option>Leagues Cup</option><option>Champions Cup</option><option>Amistoso</option>
+        </select>
+      </div>
+      <div style="border-top:1px solid #1e1e1e;padding-top:14px">
+        <div style="font-size:15px;letter-spacing:2px;color:#FFD700;margin-bottom:12px">Goles del Partido</div>
+        <div id="goals-list-display"></div>
+        <div style="display:flex;gap:8px;margin-top:8px;align-items:flex-end">
+          <div style="flex:1"><label>Anotador</label><select id="g-scorer"><option value="">— Seleccionar —</option></select></div>
+          <div style="flex:1"><label>Asistidor (opcional)</label><select id="g-assist"><option value="">— Ninguno —</option></select></div>
+          <button class="gb" onclick="addGoal()" style="white-space:nowrap">+ Gol</button>
+        </div>
+      </div>
+      <div><label>Notas</label><textarea id="m-notes" rows="2" placeholder="Observaciones..."></textarea></div>
+      <div class="fbtns">
+        <button class="ob" onclick="closeMatchModal()">Cancelar</button>
+        <button class="gb" id="match-save-btn" onclick="saveMatch()">Guardar Partido</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PLAYER MODAL -->
+<div id="player-modal" class="mo hidden">
+  <div class="md">
+    <div id="player-modal-title" style="font-size:20px;letter-spacing:2px;color:#FFD700;margin-bottom:22px">Añadir Jugador</div>
+    <div class="frow">
+      <div class="g2">
+        <div><label>Nombre Completo</label><input type="text" id="p-name" placeholder="Nombre del jugador"/></div>
+        <div><label>Número</label><input type="number" id="p-number" min="1" max="99"/></div>
+      </div>
+      <div><label>Posición</label>
+        <select id="p-pos">
+          <option value="POR">Portero</option><option value="DEF">Defensa</option>
+          <option value="MED">Mediocampista</option><option value="DEL">Delantero</option>
+        </select>
+      </div>
+      <div class="sep">
+        <div class="sep-label">ESTADÍSTICAS DE CARRERA EN EL CLUB</div>
+        <div class="g3">
+          <div><label>Goles</label><input type="number" id="p-cg" min="0" value="0"/></div>
+          <div><label>Asistencias</label><input type="number" id="p-ca" min="0" value="0"/></div>
+          <div><label>Partidos</label><input type="number" id="p-cp" min="0" value="0"/></div>
+        </div>
+      </div>
+      <div class="fbtns">
+        <button class="ob" onclick="closePlayerModal()">Cancelar</button>
+        <button class="gb" onclick="savePlayer()">Guardar Jugador</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'america_stats_v1';
+const POS_COLORS = { POR: '#F59E0B', DEF: '#3B82F6', MED: '#10B981', DEL: '#EF4444' };
+
+function loadState() {
+  try {
+    const s = localStorage.getItem(STORAGE_KEY);
+    if (s) return JSON.parse(s);
+  } catch(e) {}
+  return null;
+}
+
+function saveState() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ squad, matches }));
+}
+
+let squad = [
+  { id:1, name:"Guillermo Ochoa", number:13, position:"POR", cg:0, ca:0, cp:312 },
+  { id:2, name:"Jorge Sánchez", number:2, position:"DEF", cg:3, ca:8, cp:98 },
+  { id:3, name:"Sebastián Cáceres", number:3, position:"DEF", cg:5, ca:2, cp:87 },
+  { id:4, name:"Igor Lichnovsky", number:4, position:"DEF", cg:4, ca:1, cp:110 },
+  { id:5, name:"Miguel Layún", number:16, position:"DEF", cg:6, ca:14, cp:145 },
+  { id:6, name:"Álvaro Fidalgo", number:8, position:"MED", cg:18, ca:22, cp:120 },
+  { id:7, name:"Richard Sánchez", number:5, position:"MED", cg:7, ca:15, cp:103 },
+  { id:8, name:"Pedro Aquino", number:20, position:"MED", cg:3, ca:5, cp:76 },
+  { id:9, name:"Alejandro Zendejas", number:11, position:"DEL", cg:32, ca:28, cp:130 },
+  { id:10, name:"Henry Martín", number:21, position:"DEL", cg:95, ca:30, cp:210 },
+  { id:11, name:"Jonathan Rodríguez", number:9, position:"DEL", cg:68, ca:20, cp:148 },
+  { id:12, name:"Diego Valdés", number:10, position:"MED", cg:24, ca:35, cp:118 },
+  { id:13, name:"Brian Rodríguez", number:7, position:"DEL", cg:22, ca:18, cp:89 },
+  { id:14, name:"Óscar Jiménez", number:1, position:"POR", cg:0, ca:0, cp:65 },
+  { id:15, name:"Emilio Lara", number:15, position:"DEF", cg:2, ca:6, cp:74 },
+];
+let matches = [];
+
+const saved = loadState();
+if (saved) { squad = saved.squad; matches = saved.matches; }
+
+// Temp goals list for modal
+let editingMatchId = null;
+let tempGoals = []; // [{scorer: id, assist: id|null}]
+let editingPlayerId = null;
+
+// ─── COMPUTED ────────────────────────────────────────────────────────────────
+function getTeamStats() {
+  let w=0,d=0,l=0,gf=0,ga=0;
+  matches.forEach(m => {
+    gf += m.gf; ga += m.ga;
+    if (m.result==='W') w++;
+    else if (m.result==='D') d++;
+    else l++;
+  });
+  return { played: matches.length, w, d, l, gf, ga, gd: gf-ga, pts: w*3+d };
+}
+
+function getSeasonStats() {
+  const s = {};
+  squad.forEach(p => { s[p.id] = { goals:0, assists:0 }; });
+  matches.forEach(m => {
+    (m.scorers||[]).forEach(sid => { if(sid && s[sid]) s[sid].goals++; });
+    (m.assisters||[]).forEach(aid => { if(aid && s[aid]) s[aid].assists++; });
+  });
+  return s;
+}
+
+function getPlayerName(id) {
+  const p = squad.find(x => x.id === id);
+  return p ? p.name : '—';
+}
+
+function resultColor(r) {
+  return r==='W' ? '#10B981' : r==='D' ? '#F59E0B' : '#EF4444';
+}
+function resultLabel(r) {
+  return r==='W' ? 'VICTORIA' : r==='D' ? 'EMPATE' : 'DERROTA';
+}
+
+// ─── VIEWS ───────────────────────────────────────────────────────────────────
+let currentView = 'dashboard';
+
+function switchView(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  document.querySelectorAll('.nb').forEach(b => b.classList.remove('a'));
+  event.target.classList.add('a');
+  currentView = v;
+  renderAll();
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function renderAll() {
+  renderDashboard();
+  renderMatches();
+  renderSquad();
+}
+
+function renderDashboard() {
+  const ts = getTeamStats();
+  const ss = getSeasonStats();
+
+  // Hero stats
+  const heroData = [
+    { l:'Puntos', v:ts.pts, s:`${ts.played} partidos`, c:'#FFD700' },
+    { l:'Victorias', v:ts.w, s:`${ts.played>0?Math.round(ts.w/ts.played*100):0}% efectividad`, c:'#10B981' },
+    { l:'Goles', v:ts.gf, s:`${ts.ga} en contra`, c:'#3B82F6' },
+    { l:'Diferencia', v:(ts.gd>0?'+':'')+ts.gd, s:`${ts.w}V ${ts.d}E ${ts.l}D`, c:ts.gd>=0?'#10B981':'#EF4444' },
+  ];
+  document.getElementById('hero-stats').innerHTML = heroData.map(({l,v,s,c}) => `
+    <div class="card" style="text-align:center;border-top:3px solid ${c}">
+      <div class="hero-label">${l}</div>
+      <div class="hero-val" style="color:${c}">${v}</div>
+      <div class="hero-sub">${s}</div>
+    </div>`).join('');
+
+  // Performance bars
+  const perfEl = document.getElementById('perf-bars');
+  if (ts.played === 0) {
+    perfEl.innerHTML = '<div class="empty">Sin partidos registrados</div>';
+    document.getElementById('comp-breakdown').innerHTML = '';
+  } else {
+    perfEl.innerHTML = [['Victorias',ts.w,'#10B981'],['Empates',ts.d,'#F59E0B'],['Derrotas',ts.l,'#EF4444']].map(([lb,val,c]) => `
+      <div style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;font-family:Inter,sans-serif;font-size:13px;color:#888;margin-bottom:3px">
+          <span>${lb}</span><span style="color:${c};font-weight:600">${val}</span>
+        </div>
+        <div class="pb"><div class="pf" style="width:${ts.played>0?(val/ts.played)*100:0}%;background:${c}"></div></div>
+      </div>`).join('');
+
+    const comps = [...new Set(matches.map(m => m.comp))];
+    document.getElementById('comp-breakdown').innerHTML = `
+      <div style="margin-top:18px;border-top:1px solid #1a1a1a;padding-top:14px">
+        <div style="font-family:Inter,sans-serif;font-size:11px;color:#444;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Por Competición</div>
+        ${comps.map(comp => {
+          const cms = matches.filter(m => m.comp===comp);
+          return `<div class="comp-row"><span>${comp}</span><span>${cms.length} PJ · <span style="color:#10B981">${cms.filter(m=>m.result==='W').length}V</span> · <span style="color:#F59E0B">${cms.filter(m=>m.result==='D').length}E</span></span></div>`;
+        }).join('')}
+      </div>`;
+  }
+
+  // Recent matches
+  const recEl = document.getElementById('recent-matches');
+  if (matches.length === 0) {
+    recEl.innerHTML = '<div class="empty">Sin partidos registrados</div>';
+  } else {
+    recEl.innerHTML = [...matches].reverse().slice(0,7).map(m => `
+      <div class="pj-row">
+        <div>
+          <div class="pj-left">${m.home?'🏠':'✈️'} ${m.rival}</div>
+          <div class="pj-date">${m.date} · ${m.comp}</div>
+        </div>
+        <div>
+          <div class="pj-score" style="color:${resultColor(m.result)}">${m.gf}–${m.ga}</div>
+          <div class="pj-result" style="color:${resultColor(m.result)};text-align:right">${resultLabel(m.result)}</div>
+        </div>
+      </div>`).join('');
+  }
+
+  // Top scorers
+  const scorers = squad.map(p => ({...p, sg: ss[p.id]?.goals||0})).filter(p=>p.sg>0).sort((a,b)=>b.sg-a.sg).slice(0,5);
+  document.getElementById('top-scorers').innerHTML = scorers.length===0
+    ? '<div class="empty">Sin goles registrados</div>'
+    : scorers.map((p,i) => `
+      <div class="top-row">
+        <div class="top-rank" style="color:${i===0?'#FFD700':'#333'}">${i+1}</div>
+        <div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div>
+        <div class="top-val" style="color:#FFD700">${p.sg}</div>
+      </div>`).join('');
+
+  // Top assists
+  const assisters = squad.map(p => ({...p, sa: ss[p.id]?.assists||0})).filter(p=>p.sa>0).sort((a,b)=>b.sa-a.sa).slice(0,5);
+  document.getElementById('top-assists').innerHTML = assisters.length===0
+    ? '<div class="empty">Sin asistencias registradas</div>'
+    : assisters.map((p,i) => `
+      <div class="top-row">
+        <div class="top-rank" style="color:${i===0?'#FFD700':'#333'}">${i+1}</div>
+        <div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div>
+        <div class="top-val" style="color:#3B82F6">${p.sa}</div>
+      </div>`).join('');
+}
+
+function renderMatches() {
+  const el = document.getElementById('matches-list');
+  if (matches.length === 0) {
+    el.innerHTML = `
+      <div class="card" style="text-align:center;padding:60px">
+        <div style="font-size:48px;margin-bottom:14px">⚽</div>
+        <div style="font-size:22px;color:#FFD700;margin-bottom:8px">Sin Partidos Aún</div>
+        <div style="font-family:Inter,sans-serif;font-size:14px;color:#444;margin-bottom:20px">Registra el primer partido de la temporada</div>
+        <button class="gb" onclick="openAddMatch()">+ Registrar Partido</button>
+      </div>`;
+    return;
+  }
+  el.innerHTML = [...matches].reverse().map(m => {
+    const goalsHtml = (m.scorers||[]).filter(Boolean).map((sid,i) => {
+      const aid = m.assisters?.[i];
+      return `<span class="chip">⚽ ${getPlayerName(sid)}${aid?' · 🎯 '+getPlayerName(aid):''}</span>`;
+    }).join('');
+    return `
+      <div class="card match-card" style="margin-bottom:10px">
+        <div class="match-score-wrap">
+          <div class="match-score" style="color:${resultColor(m.result)}">${m.gf}–${m.ga}</div>
+          <div class="match-label" style="color:${resultColor(m.result)}">${resultLabel(m.result)}</div>
+        </div>
+        <div class="match-info">
+          <div class="match-rival">${m.home?'🏠':'✈️'} vs ${m.rival}</div>
+          <div class="match-meta">${m.date} · ${m.comp}</div>
+          ${goalsHtml ? `<div style="margin-top:8px">${goalsHtml}</div>` : ''}
+          ${m.notes ? `<div class="match-notes">${m.notes}</div>` : ''}
+        </div>
+        <div class="match-actions">
+          <button class="ob" onclick="openEditMatch(${m.id})">Editar</button>
+          <button class="rb" onclick="deleteMatch(${m.id})">Borrar</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderSquad() {
+  const ss = getSeasonStats();
+  const el = document.getElementById('squad-list');
+  const groups = [['POR','Porteros'],['DEF','Defensas'],['MED','Mediocampistas'],['DEL','Delanteros']];
+  el.innerHTML = groups.map(([pos, label]) => {
+    const players = squad.filter(p => p.position === pos);
+    if (!players.length) return '';
+    return `
+      <div style="margin-bottom:26px">
+        <div style="display:flex;align-items:center;margin-bottom:10px">
+          <span class="pos-dot" style="background:${POS_COLORS[pos]}"></span>
+          <span class="pos-label" style="color:${POS_COLORS[pos]}">${label}</span>
+        </div>
+        <div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;overflow:hidden">
+          <table>
+            <thead><tr>
+              <th>#</th><th>Jugador</th>
+              <th style="color:#FFD700">⚽ Temp</th>
+              <th style="color:#3B82F6">🎯 Temp</th>
+              <th>⚽ Carrera</th>
+              <th>🎯 Carrera</th>
+              <th>PJ Carrera</th>
+              <th></th>
+            </tr></thead>
+            <tbody>
+              ${players.map(p => {
+                const sg = ss[p.id]?.goals||0;
+                const sa = ss[p.id]?.assists||0;
+                return `<tr>
+                  <td class="player-num">${p.number}</td>
+                  <td class="player-name">${p.name}</td>
+                  <td><span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:${sg>0?'#FFD700':'#2a2a2a'}">${sg}</span></td>
+                  <td><span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:${sa>0?'#3B82F6':'#2a2a2a'}">${sa}</span></td>
+                  <td class="career-stat">${p.cg+sg}</td>
+                  <td class="career-stat">${p.ca+sa}</td>
+                  <td style="color:#444">${p.cp}</td>
+                  <td>
+                    <div style="display:flex;gap:6px">
+                      <button class="ob" onclick="openEditPlayer(${p.id})">Editar</button>
+                      <button class="rb" onclick="deletePlayer(${p.id})">✕</button>
+                    </div>
+                  </td>
+                </tr>`;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ─── MATCH MODAL ─────────────────────────────────────────────────────────────
+function openAddMatch() {
+  editingMatchId = null;
+  tempGoals = [];
+  document.getElementById('match-modal-title').textContent = 'Registrar Partido';
+  document.getElementById('m-date').value = '';
+  document.getElementById('m-rival').value = '';
+  document.getElementById('m-gf').value = '';
+  document.getElementById('m-ga').value = '';
+  document.getElementById('m-home').value = '1';
+  document.getElementById('m-comp').value = 'Liga MX';
+  document.getElementById('m-notes').value = '';
+  populateScorerSelects();
+  renderGoalsList();
+  document.getElementById('match-modal').classList.remove('hidden');
+}
+
+function openEditMatch(id) {
+  const m = matches.find(x => x.id === id);
+  if (!m) return;
+  editingMatchId = id;
+  tempGoals = (m.scorers||[]).map((s,i) => ({ scorer: s, assist: m.assisters?.[i]||null }));
+  document.getElementById('match-modal-title').textContent = 'Editar Partido';
+  document.getElementById('m-date').value = m.date;
+  document.getElementById('m-rival').value = m.rival;
+  document.getElementById('m-gf').value = m.gf;
+  document.getElementById('m-ga').value = m.ga;
+  document.getElementById('m-home').value = m.home ? '1' : '0';
+  document.getElementById('m-comp').value = m.comp;
+  document.getElementById('m-notes').value = m.notes||'';
+  populateScorerSelects();
+  renderGoalsList();
+  document.getElementById('match-modal').classList.remove('hidden');
+}
+
+function closeMatchModal() {
+  document.getElementById('match-modal').classList.add('hidden');
+}
+
+function populateScorerSelects() {
+  const opts = squad.map(p => `<option value="${p.id}">#${p.number} ${p.name}</option>`).join('');
+  document.getElementById('g-scorer').innerHTML = '<option value="">— Seleccionar —</option>' + opts;
+  document.getElementById('g-assist').innerHTML = '<option value="">— Ninguno —</option>' + opts;
+}
+
+function addGoal() {
+  const sid = parseInt(document.getElementById('g-scorer').value);
+  if (!sid) return;
+  const aid = parseInt(document.getElementById('g-assist').value) || null;
+  tempGoals.push({ scorer: sid, assist: aid });
+  document.getElementById('g-scorer').value = '';
+  document.getElementById('g-assist').value = '';
+  renderGoalsList();
+}
+
+function removeGoal(i) {
+  tempGoals.splice(i, 1);
+  renderGoalsList();
+}
+
+function renderGoalsList() {
+  document.getElementById('goals-list-display').innerHTML = tempGoals.map((g,i) => `
+    <div class="goal-row">
+      <span class="goal-num">${i+1}</span>
+      <span class="goal-name">⚽ ${getPlayerName(g.scorer)}</span>
+      ${g.assist ? `<span class="goal-assist">🎯 ${getPlayerName(g.assist)}</span>` : ''}
+      <button class="del-btn" onclick="removeGoal(${i})">✕</button>
+    </div>`).join('');
+}
+
+function saveMatch() {
+  const rival = document.getElementById('m-rival').value.trim();
+  const gf = parseInt(document.getElementById('m-gf').value);
+  const ga = parseInt(document.getElementById('m-ga').value);
+  if (!rival || isNaN(gf) || isNaN(ga)) return;
+  const result = gf > ga ? 'W' : gf === ga ? 'D' : 'L';
+  const match = {
+    id: editingMatchId || Date.now(),
+    date: document.getElementById('m-date').value,
+    rival,
+    gf, ga, result,
+    home: document.getElementById('m-home').value === '1',
+    comp: document.getElementById('m-comp').value,
+    notes: document.getElementById('m-notes').value.trim(),
+    scorers: tempGoals.map(g => g.scorer),
+    assisters: tempGoals.map(g => g.assist),
+  };
+  if (editingMatchId) {
+    const idx = matches.findIndex(m => m.id === editingMatchId);
+    if (idx !== -1) matches[idx] = match;
+  } else {
+    matches.push(match);
+  }
+  saveState();
+  closeMatchModal();
+  renderAll();
+}
+
+function deleteMatch(id) {
+  if (!confirm('¿Borrar este partido?')) return;
+  matches = matches.filter(m => m.id !== id);
+  saveState();
+  renderAll();
+}
+
+// ─── PLAYER MODAL ────────────────────────────────────────────────────────────
+function openAddPlayer() {
+  editingPlayerId = null;
+  document.getElementById('player-modal-title').textContent = 'Añadir Jugador';
+  document.getElementById('p-name').value = '';
+  document.getElementById('p-number').value = '';
+  document.getElementById('p-pos').value = 'DEL';
+  document.getElementById('p-cg').value = '0';
+  document.getElementById('p-ca').value = '0';
+  document.getElementById('p-cp').value = '0';
+  document.getElementById('player-modal').classList.remove('hidden');
+}
+
+function openEditPlayer(id) {
+  const p = squad.find(x => x.id === id);
+  if (!p) return;
+  editingPlayerId = id;
+  document.getElementById('player-modal-title').textContent = 'Editar Jugador';
+  document.getElementById('p-name').value = p.name;
+  document.getElementById('p-number').value = p.number;
+  document.getElementById('p-pos').value = p.position;
+  document.getElementById('p-cg').value = p.cg;
+  document.getElementById('p-ca').value = p.ca;
+  document.getElementById('p-cp').value = p.cp;
+  document.getElementById('player-modal').classList.remove('hidden');
+}
+
+function closePlayerModal() {
+  document.getElementById('player-modal').classList.add('hidden');
+}
+
+function savePlayer() {
+  const name = document.getElementById('p-name').value.trim();
+  if (!name) return;
+  const player = {
+    id: editingPlayerId || Date.now(),
+    name,
+    number: parseInt(document.getElementById('p-number').value) || 0,
+    position: document.getElementById('p-pos').value,
+    cg: parseInt(document.getElementById('p-cg').value) || 0,
+    ca: parseInt(document.getElementById('p-ca').value) || 0,
+    cp: parseInt(document.getElementById('p-cp').value) || 0,
+  };
+  if (editingPlayerId) {
+    const idx = squad.findIndex(p => p.id === editingPlayerId);
+    if (idx !== -1) squad[idx] = player;
+  } else {
+    squad.push(player);
+  }
+  saveState();
+  closePlayerModal();
+  renderAll();
+}
+
+function deletePlayer(id) {
+  if (!confirm('¿Eliminar este jugador?')) return;
+  squad = squad.filter(p => p.id !== id);
+  saveState();
+  renderAll();
+}
+
+// Close modals clicking outside
+document.getElementById('match-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeMatchModal();
+});
+document.getElementById('player-modal').addEventListener('click', function(e) {
+  if (e.target === this) closePlayerModal();
+});
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+renderAll();
+</script>
+</body>
+</html>
