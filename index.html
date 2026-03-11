@@ -321,6 +321,18 @@ tr:hover td{background:#202020}
   </div>
 </div>
 
+<!-- PLAYER HISTORY MODAL -->
+<div id="ph-modal" class="mo hidden" onclick="if(event.target===this)closePH()">
+  <div class="md" style="max-width:600px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+      <div id="ph-title" class="modal-title" style="margin-bottom:0"></div>
+      <button class="ob" onclick="closePH()">Cerrar</button>
+    </div>
+    <div id="ph-summary" style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px"></div>
+    <div id="ph-list"></div>
+  </div>
+</div>
+
 <script>
 const KEY='america_v3';
 const PC={POR:'#F59E0B',DEF:'#60A5FA',MED:'#34D399',DEL:'#F87171'};
@@ -565,7 +577,7 @@ function renderSquad(){
           const sg=ss[p.id]?.g||0,sa=ss[p.id]?.a||0,sp=ss[p.id]?.p||0;
           return`<tr>
             <td class="player-num">${p.number}</td>
-            <td class="player-name">${p.name}</td>
+            <td class="player-name" style="cursor:pointer;color:#FFD700" onclick="openPlayerHistory(${p.id})">${p.name}</td>
             <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sg>0?'#FFD700':'#7a6000'}">${sg}</b></td>
             <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sa>0?'#60A5FA':'#1e3a5f'}">${sa}</b></td>
             <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sp>0?'#34D399':'#0d3d2a'}">${sp}</b></td>
@@ -584,7 +596,7 @@ function renderSquad(){
         return`<div class="pc">
           <div class="pc-top">
             <div class="pc-num">${p.number}</div>
-            <div><div class="pc-name">${p.name}</div><div class="pc-pos">${label}</div></div>
+            <div><div class="pc-name" style="cursor:pointer;color:#FFD700" onclick="openPlayerHistory(${p.id})">${p.name}</div><div class="pc-pos">${label}</div></div>
           </div>
           <div class="pc-section-lbl">Temporada actual</div>
           <div class="pc-stats">
@@ -903,6 +915,70 @@ function importData(){
     alert('❌ Código inválido. Asegúrate de copiar el código completo.');
   }
 }
+
+/* ── PLAYER HISTORY MODAL ── */
+function openPlayerHistory(id){
+  const p=squad.find(x=>x.id===id);if(!p)return;
+  const played=matches.filter(m=>(m.participants||[]).includes(id));
+  const goalMatches=matches.reduce((acc,m)=>{
+    (m.scorers||[]).forEach((s,i)=>{if(s==id)acc.push({match:m,assist:m.assisters?.[i]||null});});
+    return acc;
+  },[]);
+  const assistMatches=matches.reduce((acc,m)=>{
+    (m.assisters||[]).forEach((a,i)=>{if(a==id)acc.push({match:m,scorer:m.scorers?.[i]||null});});
+    return acc;
+  },[]);
+
+  document.getElementById('ph-title').textContent=`#${p.number} ${p.name}`;
+  document.getElementById('ph-summary').innerHTML=[
+    ['PJ Temporada', played.length, '#34D399'],
+    ['⚽ Goles', goalMatches.length, '#FFD700'],
+    ['🎯 Asistencias', assistMatches.length, '#60A5FA'],
+  ].map(([lbl,val,c])=>`
+    <div style="background:#222;border-radius:8px;padding:12px;text-align:center">
+      <div style="font-family:'Bebas Neue';font-size:30px;color:${c}">${val}</div>
+      <div style="font-family:Inter,sans-serif;font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-top:3px">${lbl}</div>
+    </div>`).join('');
+
+  if(!played.length){
+    document.getElementById('ph-list').innerHTML='<div class="empty">Sin partidos registrados esta temporada</div>';
+    document.getElementById('ph-modal').classList.remove('hidden');
+    return;
+  }
+
+  const contrib={};
+  goalMatches.forEach(({match})=>{
+    if(!contrib[match.id])contrib[match.id]={g:0,a:0};
+    contrib[match.id].g++;
+  });
+  assistMatches.forEach(({match})=>{
+    if(!contrib[match.id])contrib[match.id]={g:0,a:0};
+    contrib[match.id].a++;
+  });
+
+  document.getElementById('ph-list').innerHTML=[...played].reverse().map(m=>{
+    const c=contrib[m.id]||{g:0,a:0};
+    const tags=[];
+    if(c.g)tags.push(`<span style="background:#3a2e00;border:1px solid #FFD700;border-radius:5px;padding:2px 8px;font-family:Inter,sans-serif;font-size:12px;color:#FFD700">⚽ ${c.g} gol${c.g>1?'es':''}</span>`);
+    if(c.a)tags.push(`<span style="background:#0d1e3a;border:1px solid #60A5FA;border-radius:5px;padding:2px 8px;font-family:Inter,sans-serif;font-size:12px;color:#60A5FA">🎯 ${c.a} asist${c.a>1?'encias':'encia'}</span>`);
+    return`<div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #222;gap:10px;flex-wrap:wrap">
+      <div>
+        <div style="font-family:Inter,sans-serif;font-size:13px;color:#f0f0f0;font-weight:500">${homeIcon(m)} vs ${m.rival}</div>
+        <div style="font-family:Inter,sans-serif;font-size:11px;color:#aaa;margin-top:2px">${m.date||'—'} · ${m.comp}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        ${tags.join('')}
+        <div style="text-align:right">
+          <div style="font-family:'Bebas Neue';font-size:22px;color:${rc(m.result)}">${m.gf}–${m.ga}</div>
+          <div style="font-family:Inter,sans-serif;font-size:10px;font-weight:600;color:${rc(m.result)};text-transform:uppercase;letter-spacing:1px">${rl(m.result)}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('ph-modal').classList.remove('hidden');
+}
+function closePH(){document.getElementById('ph-modal').classList.add('hidden');}
 
 renderAll();
 </script>
