@@ -207,10 +207,23 @@ tr:hover td{background:#202020}
         <div><label>Rival</label><input type="text" id="m-rival" placeholder="Nombre del rival"/></div>
       </div>
       <div class="g3">
-        <div><label>Goles a favor</label><input type="number" id="m-gf" min="0" placeholder="0"/></div>
-        <div><label>Goles en contra</label><input type="number" id="m-ga" min="0" placeholder="0"/></div>
+        <div><label>Goles a favor</label><input type="number" id="m-gf" min="0" placeholder="0" oninput="onScoreChange()"/></div>
+        <div><label>Goles en contra</label><input type="number" id="m-ga" min="0" placeholder="0" oninput="onScoreChange()"/></div>
         <div><label>Condición</label>
-          <select id="m-home"><option value="1">🏠 Local</option><option value="0">✈️ Visita</option></select>
+          <select id="m-home"><option value="1">🏠 Local</option><option value="0">✈️ Visita</option><option value="2">⚖️ Neutral</option></select>
+        </div>
+      </div>
+      <!-- Penales (solo visible cuando hay empate) -->
+      <div id="penalty-section" class="hidden" style="background:#1e1a10;border:1px solid #5a4010;border-radius:8px;padding:12px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <input type="checkbox" id="m-pen" style="width:15px;height:15px;accent-color:#f59e0b;flex-shrink:0" onchange="onPenChange()"/>
+          <label for="m-pen" style="margin:0;color:#f59e0b;cursor:pointer;font-size:12px;letter-spacing:1px">El partido se decidió en penales</label>
+        </div>
+        <div id="pen-scores" class="hidden">
+          <div class="g2">
+            <div><label>Penales a favor</label><input type="number" id="m-pgf" min="0" placeholder="0"/></div>
+            <div><label>Penales en contra</label><input type="number" id="m-pga" min="0" placeholder="0"/></div>
+          </div>
         </div>
       </div>
       <div><label>Competición</label>
@@ -345,7 +358,9 @@ function tStats(){
   matches.forEach(m=>{
     gf+=m.gf;ga+=m.ga;
     if(m.result==='W'){w++;pts+=3;}
+    else if(m.result==='WP'){w++;pts+=3;}  // penales gana = victoria
     else if(m.result==='D'){d++;pts+=1;}
+    else if(m.result==='LP'){d++;pts+=1;}  // penales pierde = empate en puntos
     else l++;
   });
   const pj=matches.length;
@@ -373,8 +388,9 @@ function pn(id,plain){
   if(found)return found.name;
   return plain?'Jugador eliminado':'<i style="color:#888">Jugador eliminado</i>';
 }
-function rc(r){return r==='W'?'#4ade80':r==='D'?'#facc15':'#f87171';}
-function rl(r){return r==='W'?'VICTORIA':r==='D'?'EMPATE':'DERROTA';}
+function rc(r){return r==='W'?'#4ade80':r==='WP'?'#86efac':r==='D'?'#facc15':r==='LP'?'#fb923c':'#f87171';}
+function rl(r){return r==='W'?'VICTORIA':r==='WP'?'VIC. PENALES':r==='D'?'EMPATE':r==='LP'?'DER. PENALES':'DERROTA';}
+function homeIcon(m){return m.neutral?'⚖️':m.home?'🏠':'✈️';}
 
 function switchView(v,btn){
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
@@ -438,7 +454,7 @@ function renderDash(){
 
   document.getElementById('recent-matches').innerHTML=[...matches].reverse().slice(0,7).map(m=>`
     <div class="pj-row">
-      <div><div class="pj-left">${m.home?'🏠':'✈️'} ${m.rival}</div><div class="pj-date">${m.date||'—'} · ${m.comp}</div></div>
+      <div><div class="pj-left">${homeIcon(m)} ${m.rival}</div><div class="pj-date">${m.date||'—'} · ${m.comp}</div></div>
       <div><div class="pj-score" style="color:${rc(m.result)}">${m.gf}–${m.ga}</div><div class="pj-result-lbl" style="color:${rc(m.result)}">${rl(m.result)}</div></div>
     </div>`).join('');
 
@@ -475,8 +491,9 @@ function renderMatches(){
         <div class="match-result-lbl" style="color:${rc(m.result)}">${rl(m.result)}</div>
       </div>
       <div class="match-info">
-        <div class="match-rival">${m.home?'🏠':'✈️'} vs ${m.rival}</div>
+        <div class="match-rival">${homeIcon(m)} vs ${m.rival}</div>
         <div class="match-meta">${m.date||'—'} · ${m.comp}</div>
+        ${(m.result==='WP'||m.result==='LP')?`<div style="font-family:Inter,sans-serif;font-size:11px;color:#f59e0b;margin-top:2px">🥅 Penales: ${m.pgf??'?'} – ${m.pga??'?'}</div>`:''}
         ${goals?`<div class="match-goals">${goals}</div>`:''}
         ${m.notes?`<div class="match-notes-txt">${m.notes}</div>`:''}
       </div>
@@ -568,6 +585,10 @@ function openAddMatch(){
   ['m-date','m-rival','m-notes'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('m-gf').value='';document.getElementById('m-ga').value='';
   document.getElementById('m-home').value='1';document.getElementById('m-comp').value='Liga MX';
+  document.getElementById('m-pen').checked=false;
+  document.getElementById('m-pgf').value='';document.getElementById('m-pga').value='';
+  document.getElementById('penalty-section').classList.add('hidden');
+  document.getElementById('pen-scores').classList.add('hidden');
   popSelects();renderGoals();renderPart();
   document.getElementById('match-modal').classList.remove('hidden');
 }
@@ -581,9 +602,20 @@ function openEditMatch(id){
   document.getElementById('m-date').value=m.date||'';
   document.getElementById('m-rival').value=m.rival;
   document.getElementById('m-gf').value=m.gf;document.getElementById('m-ga').value=m.ga;
-  document.getElementById('m-home').value=m.home?'1':'0';
+  // home: 1=local, 0=visita, 2=neutral
+  const homeVal=m.neutral?'2':(m.home?'1':'0');
+  document.getElementById('m-home').value=homeVal;
   document.getElementById('m-comp').value=m.comp;
   document.getElementById('m-notes').value=m.notes||'';
+  // penalty state
+  const hasPen=m.result==='WP'||m.result==='LP';
+  document.getElementById('m-pen').checked=hasPen;
+  document.getElementById('m-pgf').value=m.pgf||'';
+  document.getElementById('m-pga').value=m.pga||'';
+  // show/hide penalty section: only if draw
+  const isDraw=m.gf===m.ga;
+  document.getElementById('penalty-section').classList.toggle('hidden',!isDraw);
+  document.getElementById('pen-scores').classList.toggle('hidden',!hasPen);
   popSelects();renderGoals();renderPart();
   document.getElementById('match-modal').classList.remove('hidden');
 }
@@ -691,17 +723,35 @@ function clearP(){
   tPart=new Set(a);renderPart();
 }
 
+function onScoreChange(){
+  const gf=parseInt(document.getElementById('m-gf').value);
+  const ga=parseInt(document.getElementById('m-ga').value);
+  const isDraw=!isNaN(gf)&&!isNaN(ga)&&gf===ga;
+  document.getElementById('penalty-section').classList.toggle('hidden',!isDraw);
+  if(!isDraw){document.getElementById('m-pen').checked=false;document.getElementById('pen-scores').classList.add('hidden');}
+}
+function onPenChange(){
+  document.getElementById('pen-scores').classList.toggle('hidden',!document.getElementById('m-pen').checked);
+}
+
 function saveMatch(){
   const rival=document.getElementById('m-rival').value.trim();
   const gf=parseInt(document.getElementById('m-gf').value);
   const ga=parseInt(document.getElementById('m-ga').value);
   if(!rival||isNaN(gf)||isNaN(ga))return;
+  const homeVal=document.getElementById('m-home').value;
+  const hasPen=document.getElementById('m-pen').checked&&gf===ga;
+  const pgf=hasPen?parseInt(document.getElementById('m-pgf').value)||0:null;
+  const pga=hasPen?parseInt(document.getElementById('m-pga').value)||0:null;
+  let result=gf>ga?'W':gf===ga?'D':'L';
+  if(hasPen&&pgf!==null&&pga!==null)result=pgf>pga?'WP':'LP';
   const m={
     id:eMid||Date.now(),
     date:document.getElementById('m-date').value,
-    rival,gf,ga,
-    result:gf>ga?'W':gf===ga?'D':'L',
-    home:document.getElementById('m-home').value==='1',
+    rival,gf,ga,result,
+    home:homeVal==='1',
+    neutral:homeVal==='2',
+    pgf,pga,
     comp:document.getElementById('m-comp').value,
     notes:document.getElementById('m-notes').value.trim(),
     scorers:tGoals.map(g=>g.scorer),
