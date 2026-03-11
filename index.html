@@ -756,7 +756,7 @@ function renderPart(){
     const isA=auto.has(p.id),ck=tPart.has(p.id);
     return`<label class="pchk${ck?' on':''}${isA?' auto':''}">
       <input type="checkbox" ${ck?'checked':''} ${isA?'disabled':''} onchange="toggleP(${p.id},this.checked)" style="width:13px;height:13px;accent-color:#4ade80;flex-shrink:0"/>
-      <span>#${p.number} ${p.name.split(' ')[0]}${isA?' ⚽':''}</span>
+      <span>#${p.number} ${p.name.split(' ').slice(-1)[0]}${isA?' ⚽':''}</span>
     </label>`;
   }).join('');
   // Append external players as non-editable chips
