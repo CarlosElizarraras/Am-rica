@@ -186,6 +186,9 @@ tr:hover td{background:#202020}
       <div class="card"><div class="section-title">🏆 Carrera · Goles</div><div id="top-career-scorers"></div></div>
       <div class="card"><div class="section-title">🏆 Carrera · Asistencias</div><div id="top-career-assists"></div></div>
     </div>
+    <div style="margin-top:16px">
+      <div class="card"><div class="section-title">🧑‍💼 DT · André Jardine</div><div id="dt-stats"></div></div>
+    </div>
   </div>
 
   <!-- PARTIDOS -->
@@ -354,6 +357,7 @@ tr:hover td{background:#202020}
 
 <script>
 const KEY='america_v3';
+const DT={name:'André Jardine',pj:116,w:61,d:32,l:23,gf:204,gc:107};
 const PC={POR:'#F59E0B',DEF:'#60A5FA',MED:'#34D399',DEL:'#F87171'};
 
 const DEFAULT_SQUAD=[
@@ -534,6 +538,7 @@ function renderDash(){
     document.getElementById('top-assists').innerHTML='<div class="empty">Sin datos</div>';
     document.getElementById('top-career-scorers').innerHTML='<div class="empty">Sin datos</div>';
     document.getElementById('top-career-assists').innerHTML='<div class="empty">Sin datos</div>';
+    renderDT();
     return;
   }
 
@@ -594,6 +599,37 @@ function renderDash(){
   document.getElementById('top-career-assists').innerHTML=cas.length
     ?cas.map((p,i)=>`<div class="top-row"><span class="top-rank${i===0?' gold':''}">${i+1}</span><div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div><span class="top-val" style="color:#60A5FA">${p.ta}</span></div>`).join('')
     :'<div class="empty">Sin datos</div>';
+
+  renderDT();
+}
+
+/* ── DT STATS ── */
+function renderDT(){
+  const ts=tStats();
+  const pj=DT.pj+ts.pj;
+  const w =DT.w +ts.w;
+  const d =DT.d +ts.d;
+  const l =DT.l +ts.l;
+  const gf=DT.gf+ts.gf;
+  const gc=DT.gc+ts.ga;
+  const efec=pj>0?((( w*3+d)/(pj*3))*100).toFixed(1):0;
+  const cols=[
+    {l:'PJ', v:pj,      c:'#e8e8e8'},
+    {l:'V',  v:w,       c:'#4ade80'},
+    {l:'E',  v:d,       c:'#facc15'},
+    {l:'D',  v:l,       c:'#f87171'},
+    {l:'GF', v:gf,      c:'#60A5FA'},
+    {l:'GC', v:gc,      c:'#fb923c'},
+    {l:'%EF',v:efec+'%',c:'#a78bfa'},
+  ];
+  document.getElementById('dt-stats').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px">
+      ${cols.map(({l,v,c})=>`
+        <div style="background:#222;border-radius:8px;padding:10px 6px;text-align:center;border-top:2px solid ${c}">
+          <div style="font-family:Inter,sans-serif;font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">${l}</div>
+          <div style="font-family:'Bebas Neue';font-size:28px;color:${c};line-height:1">${v}</div>
+        </div>`).join('')}
+    </div>`;
 }
 
 /* ── PARTIDOS ── */
