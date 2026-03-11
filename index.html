@@ -460,6 +460,16 @@ function renderDash(){
         const cl=cm.filter(m=>m.result==='L').length;
         return`<div class="comp-row"><span>${c}</span><span>${cm.length} PJ · <span style="color:#4ade80">${cw}V</span> · <span style="color:#facc15">${cd}E</span> · <span style="color:#f87171">${cl}D</span></span></div>`;
       }).join('')}
+    </div>
+    <div style="margin-top:16px;border-top:1px solid #252525;padding-top:12px">
+      <div style="font-family:Inter,sans-serif;font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Por Condición</div>
+      ${[['🏠 Local',m=>m.home&&!m.neutral],['✈️ Visita',m=>!m.home&&!m.neutral],['⚖️ Neutral',m=>m.neutral]].map(([lbl,fn])=>{
+        const cm=matches.filter(fn);if(!cm.length)return'';
+        const cw=cm.filter(m=>m.result==='W').length;
+        const cd=cm.filter(m=>m.result==='D'||m.result==='LP'||m.result==='WP').length;
+        const cl=cm.filter(m=>m.result==='L').length;
+        return`<div class="comp-row"><span>${lbl}</span><span>${cm.length} PJ · <span style="color:#4ade80">${cw}V</span> · <span style="color:#facc15">${cd}E</span> · <span style="color:#f87171">${cl}D</span></span></div>`;
+      }).join('')}
     </div>`;
 
   document.getElementById('recent-matches').innerHTML=[...matches].reverse().slice(0,7).map(m=>`
