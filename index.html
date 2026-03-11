@@ -359,12 +359,20 @@ function sStats(){
   matches.forEach(m=>{
     (m.scorers||[]).forEach(id=>{const k=+id;if(k&&s[k])s[k].g++;});
     (m.assisters||[]).forEach(id=>{const k=+id;if(k&&s[k])s[k].a++;});
+    // participants: only count numeric IDs (squad members)
     (m.participants||[]).forEach(id=>{const k=+id;if(k&&s[k])s[k].p++;});
   });
   return s;
 }
 
-function pn(id){return squad.find(p=>p.id==id)?.name||'<i style="color:#888">Jugador eliminado</i>';}
+function pn(id,plain){
+  if(typeof id==='string'&&isNaN(parseInt(id))){
+    return plain?`★ ${id}`:`<span style="color:#f59e0b" title="Jugador externo">★ ${id}</span>`;
+  }
+  const found=squad.find(p=>p.id==id);
+  if(found)return found.name;
+  return plain?'Jugador eliminado':'<i style="color:#888">Jugador eliminado</i>';
+}
 function rc(r){return r==='W'?'#4ade80':r==='D'?'#facc15':'#f87171';}
 function rl(r){return r==='W'?'VICTORIA':r==='D'?'EMPATE':'DERROTA';}
 
@@ -459,7 +467,7 @@ function renderMatches(){
   el.innerHTML=[...matches].reverse().map(m=>{
     const goals=(m.scorers||[]).filter(Boolean).map((sid,i)=>{
       const aid=m.assisters?.[i];
-      return`<span class="chip">⚽ ${pn(sid)}${aid?` · 🎯 ${pn(aid)}`:''}</span>`;
+      return`<span class="chip">⚽ ${pn(sid,true)}${aid?` · 🎯 ${pn(aid,true)}`:''}</span>`;
     }).join('');
     return`<div class="match-card">
       <div class="match-score-wrap">
@@ -584,16 +592,54 @@ function closeMatchModal(){document.getElementById('match-modal').classList.add(
 
 function popSelects(){
   const o=squad.map(p=>`<option value="${p.id}">#${p.number} ${p.name}</option>`).join('');
-  document.getElementById('g-scorer').innerHTML='<option value="">— Seleccionar —</option>'+o;
-  document.getElementById('g-assist').innerHTML='<option value="">— Ninguno —</option>'+o;
+  const ext=`<option value="__ext__" style="color:#f59e0b">★ Jugador externo (ex-plantilla)...</option>`;
+  document.getElementById('g-scorer').innerHTML='<option value="">— Seleccionar —</option>'+o+ext;
+  document.getElementById('g-assist').innerHTML='<option value="">— Ninguno —</option>'+o+ext;
+  ['scorer','assist'].forEach(role=>{
+    const sel=document.getElementById('g-'+role);
+    let inp=document.getElementById('g-'+role+'-ext');
+    if(!inp){
+      inp=document.createElement('input');
+      inp.id='g-'+role+'-ext';
+      inp.type='text';
+      inp.placeholder='Nombre del jugador externo';
+      inp.style.marginTop='6px';
+      inp.classList.add('hidden');
+      sel.parentNode.appendChild(inp);
+    }
+    sel.onchange=function(){
+      inp.classList.toggle('hidden',sel.value!=='__ext__');
+      if(sel.value==='__ext__')inp.focus();
+    };
+  });
 }
 
 function addGoal(){
-  const sid=parseInt(document.getElementById('g-scorer').value);if(!sid)return;
-  const aid=parseInt(document.getElementById('g-assist').value)||null;
-  tGoals.push({scorer:sid,assist:aid});
-  tPart.add(sid);if(aid)tPart.add(aid);
+  let scorerVal=document.getElementById('g-scorer').value;
+  if(!scorerVal)return;
+  let scorerKey;
+  if(scorerVal==='__ext__'){
+    const extName=document.getElementById('g-scorer-ext').value.trim();
+    if(!extName)return;
+    scorerKey=extName; // store as plain string
+  } else {
+    scorerKey=parseInt(scorerVal);
+  }
+  let assistVal=document.getElementById('g-assist').value;
+  let assistKey=null;
+  if(assistVal==='__ext__'){
+    const extName=document.getElementById('g-assist-ext').value.trim();
+    if(extName)assistKey=extName;
+  } else if(assistVal){
+    assistKey=parseInt(assistVal)||null;
+  }
+  tGoals.push({scorer:scorerKey,assist:assistKey});
+  if(typeof scorerKey==='number')tPart.add(scorerKey);
+  if(assistKey&&typeof assistKey==='number')tPart.add(assistKey);
   document.getElementById('g-scorer').value='';document.getElementById('g-assist').value='';
+  document.getElementById('g-scorer-ext').value='';document.getElementById('g-assist-ext').value='';
+  document.getElementById('g-scorer-ext').classList.add('hidden');
+  document.getElementById('g-assist-ext').classList.add('hidden');
   renderGoals();renderPart();
 }
 
@@ -611,15 +657,31 @@ function renderGoals(){
 
 function renderPart(){
   const auto=new Set();
-  tGoals.forEach(g=>{if(g.scorer)auto.add(g.scorer);if(g.assist)auto.add(g.assist);});
+  const extNames=new Set();
+  tGoals.forEach(g=>{
+    if(typeof g.scorer==='number')auto.add(g.scorer);
+    else if(g.scorer)extNames.add(g.scorer);
+    if(typeof g.assist==='number')auto.add(g.assist);
+    else if(g.assist)extNames.add(g.assist);
+  });
   auto.forEach(id=>tPart.add(id));
-  document.getElementById('participants-grid').innerHTML=squad.map(p=>{
+  let html=squad.map(p=>{
     const isA=auto.has(p.id),ck=tPart.has(p.id);
     return`<label class="pchk${ck?' on':''}${isA?' auto':''}">
       <input type="checkbox" ${ck?'checked':''} ${isA?'disabled':''} onchange="toggleP(${p.id},this.checked)" style="width:13px;height:13px;accent-color:#4ade80;flex-shrink:0"/>
       <span>#${p.number} ${p.name.split(' ')[0]}${isA?' ⚽':''}</span>
     </label>`;
   }).join('');
+  // Append external players as non-editable chips
+  if(extNames.size){
+    html+=`<div style="grid-column:1/-1;margin-top:6px;padding-top:6px;border-top:1px solid #333;font-family:Inter,sans-serif;font-size:10px;color:#aaa;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px">Jugadores externos</div>`;
+    extNames.forEach(name=>{
+      html+=`<div class="pchk auto" style="background:#2a2010;border-color:#5a4010;color:#f59e0b;cursor:default">
+        <span>★ ${name}</span>
+      </div>`;
+    });
+  }
+  document.getElementById('participants-grid').innerHTML=html;
 }
 
 function toggleP(id,ck){ck?tPart.add(id):tPart.delete(id);renderPart();}
