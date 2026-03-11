@@ -141,7 +141,12 @@ tr:hover td{background:#202020}
 .pchk input{width:13px;height:13px;accent-color:#4ade80;flex-shrink:0}
 
 /* Export/Import modal */
-.exp-textarea{font-family:'Inter',monospace;font-size:11px;background:#0d0d0d;border:1px solid #333;color:#ccc;padding:10px;border-radius:8px;width:100%;height:100px;resize:vertical;word-break:break-all}
+.racha-card{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:12px;padding:18px;text-align:center;border-top:3px solid var(--rc,#FFD700);position:relative}
+.racha-val{font-size:56px;line-height:1;color:var(--rc,#FFD700);margin:6px 0}
+.racha-lbl{font-family:'Inter',sans-serif;font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.racha-type{font-size:13px;letter-spacing:1px;color:var(--rc,#FFD700);margin-top:4px}
+.racha-zero{opacity:.45}
+.racha-badge{position:absolute;top:10px;right:10px;font-family:'Inter',sans-serif;font-size:9px;background:var(--rc,#FFD700);color:#000;border-radius:4px;padding:2px 6px;font-weight:700;letter-spacing:1px}
 </style>
 </head>
 <body>
@@ -159,6 +164,7 @@ tr:hover td{background:#202020}
       <button class="nb a" onclick="switchView('dashboard',this)">📊 Dashboard</button>
       <button class="nb"   onclick="switchView('matches',this)">⚽ Partidos</button>
       <button class="nb"   onclick="switchView('squad',this)">👥 Plantilla</button>
+      <button class="nb"   onclick="switchView('rachas',this)">🔥 Rachas</button>
       <button class="exp-btn" onclick="openExport()">💾 Datos</button>
     </nav>
   </div>
@@ -198,6 +204,19 @@ tr:hover td{background:#202020}
       <button class="gb" onclick="openAddPlayer()">+ Jugador</button>
     </div>
     <div id="squad-list"></div>
+  </div>
+
+  <!-- RACHAS -->
+  <div id="view-rachas" class="view">
+    <div class="page-header"><div class="page-title">🔥 Rachas Activas</div></div>
+    <div style="margin-bottom:22px">
+      <div style="font-size:14px;letter-spacing:2px;color:#FFD700;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #2e2e2e">TODAS LAS COMPETENCIAS</div>
+      <div class="g3" id="rachas-all"></div>
+    </div>
+    <div>
+      <div style="font-size:14px;letter-spacing:2px;color:#FFD700;margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid #2e2e2e">SOLO LIGA MX</div>
+      <div class="g3" id="rachas-liga"></div>
+    </div>
   </div>
 </main>
 
@@ -418,7 +437,72 @@ function switchView(v,btn){
   renderAll();
 }
 
-function renderAll(){renderDash();renderMatches();renderSquad();}
+function renderAll(){renderDash();renderMatches();renderSquad();renderRachas();}
+
+/* ── RACHAS ── */
+function calcStreak(ms){
+  // ms = array of matches in chronological order (oldest first)
+  // returns {unbeaten, wins, unbeatenHome, winsHome, unbeatenAway, winsAway}
+  function streak(arr, winCond, nolossCond){
+    let cur=0;
+    for(let i=arr.length-1;i>=0;i--){
+      const m=arr[i];
+      if(winCond?winCond(m):nolossCond(m)) cur++;
+      else break;
+    }
+    return cur;
+  }
+  const isWin=m=>m.result==='W';
+  const noLoss=m=>m.result!=='L';
+  const home=ms.filter(m=>m.home&&!m.neutral);
+  const away=ms.filter(m=>!m.home&&!m.neutral);
+  return{
+    unbeaten:    streak(ms,   null, noLoss),
+    wins:        streak(ms,   isWin, null),
+    unbeatenHome:streak(home, null, noLoss),
+    winsHome:    streak(home, isWin, null),
+    unbeatenAway:streak(away, null, noLoss),
+    winsAway:    streak(away, isWin, null),
+  };
+}
+
+function renderRachas(){
+  if(!matches.length){
+    ['rachas-all','rachas-liga'].forEach(id=>{
+      document.getElementById(id).innerHTML=`<div class="empty" style="grid-column:1/-1">Sin partidos registrados</div>`;
+    });
+    return;
+  }
+
+  const chrono=[...matches].sort((a,b)=>a.id-b.id);
+  const liga=chrono.filter(m=>m.comp==='Liga MX');
+
+  const streakDefs=[
+    {key:'unbeaten',     label:'Sin Perder',        sub:'General',  color:'#4ade80'},
+    {key:'wins',         label:'Victorias',          sub:'General',  color:'#FFD700'},
+    {key:'unbeatenHome', label:'Sin Perder Local',   sub:'🏠 Local', color:'#60A5FA'},
+    {key:'winsHome',     label:'Victorias Local',    sub:'🏠 Local', color:'#a78bfa'},
+    {key:'unbeatenAway', label:'Sin Perder Visita',  sub:'✈️ Visita',color:'#34D399'},
+    {key:'winsAway',     label:'Victorias Visita',   sub:'✈️ Visita',color:'#fb923c'},
+  ];
+
+  function buildCards(ms, containerId){
+    const s=calcStreak(ms);
+    document.getElementById(containerId).innerHTML=streakDefs.map(({key,label,sub,color})=>{
+      const val=s[key];
+      return`<div class="racha-card${val===0?' racha-zero':''}" style="--rc:${color}">
+        ${val>=5?`<div class="racha-badge" style="--rc:${color}">🔥 RACHA</div>`:''}
+        <div class="racha-lbl">${sub}</div>
+        <div class="racha-val">${val}</div>
+        <div class="racha-type">${label}</div>
+        <div style="font-family:Inter,sans-serif;font-size:10px;color:#666;margin-top:6px">${val===0?'Racha terminada':val===1?'partido':'partidos'}</div>
+      </div>`;
+    }).join('');
+  }
+
+  buildCards(chrono, 'rachas-all');
+  buildCards(liga,   'rachas-liga');
+}
 
 /* ── DASHBOARD ── */
 function renderDash(){
