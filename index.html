@@ -238,6 +238,10 @@ tr:hover td{background:#202020}
           <div><label>Anotador</label><select id="g-scorer"><option value="">— Seleccionar —</option></select></div>
           <div><label>Asistidor (opcional)</label><select id="g-assist"><option value="">— Ninguno —</option></select></div>
         </div>
+        <label style="display:flex;align-items:center;gap:7px;margin-top:8px;cursor:pointer;width:fit-content">
+          <input type="checkbox" id="g-og" style="width:14px;height:14px;accent-color:#f87171;flex-shrink:0" onchange="onOGChange()"/>
+          <span style="font-family:Inter,sans-serif;font-size:12px;color:#f87171;letter-spacing:0.5px">⚽ Autogol del rival</span>
+        </label>
         <button class="ob-sm" onclick="addGoal()" style="margin-top:8px">+ Agregar Gol</button>
       </div>
       <div class="mdiv">
@@ -482,6 +486,7 @@ function renderMatches(){
   }
   el.innerHTML=[...matches].reverse().map(m=>{
     const goals=(m.scorers||[]).filter(Boolean).map((sid,i)=>{
+      if(sid==='__og__')return`<span class="chip" style="color:#f87171">⚽ Autogol</span>`;
       const aid=m.assisters?.[i];
       return`<span class="chip">⚽ ${pn(sid,true)}${aid?` · 🎯 ${pn(aid,true)}`:''}</span>`;
     }).join('');
@@ -589,6 +594,7 @@ function openAddMatch(){
   document.getElementById('m-pgf').value='';document.getElementById('m-pga').value='';
   document.getElementById('penalty-section').classList.add('hidden');
   document.getElementById('pen-scores').classList.add('hidden');
+  document.getElementById('g-og').checked=false;onOGChange();
   popSelects();renderGoals();renderPart();
   document.getElementById('match-modal').classList.remove('hidden');
 }
@@ -646,14 +652,34 @@ function popSelects(){
   });
 }
 
+function onOGChange(){
+  const og=document.getElementById('g-og').checked;
+  document.getElementById('g-scorer').disabled=og;
+  document.getElementById('g-assist').disabled=og;
+  if(og){
+    document.getElementById('g-scorer').value='';
+    document.getElementById('g-assist').value='';
+    document.getElementById('g-scorer-ext')?.classList.add('hidden');
+    document.getElementById('g-assist-ext')?.classList.add('hidden');
+  }
+}
+
 function addGoal(){
+  const og=document.getElementById('g-og').checked;
+  if(og){
+    tGoals.push({scorer:'__og__',assist:null,og:true});
+    document.getElementById('g-og').checked=false;
+    onOGChange();
+    renderGoals();renderPart();
+    return;
+  }
   let scorerVal=document.getElementById('g-scorer').value;
   if(!scorerVal)return;
   let scorerKey;
   if(scorerVal==='__ext__'){
     const extName=document.getElementById('g-scorer-ext').value.trim();
     if(!extName)return;
-    scorerKey=extName; // store as plain string
+    scorerKey=extName;
   } else {
     scorerKey=parseInt(scorerVal);
   }
@@ -675,17 +701,19 @@ function addGoal(){
   renderGoals();renderPart();
 }
 
-function removeGoal(i){tGoals.splice(i,1);renderGoals();renderPart();}
-
 function renderGoals(){
   document.getElementById('goals-list-display').innerHTML=tGoals.map((g,i)=>`
     <div class="goal-row">
       <span class="goal-num">${i+1}</span>
-      <span class="goal-name">⚽ ${pn(g.scorer)}</span>
-      ${g.assist?`<span class="goal-assist">🎯 ${pn(g.assist)}</span>`:''}
+      ${g.og
+        ?`<span class="goal-name" style="color:#f87171">⚽ Autogol del rival</span>`
+        :`<span class="goal-name">⚽ ${pn(g.scorer)}</span>${g.assist?`<span class="goal-assist">🎯 ${pn(g.assist)}</span>`:''}`
+      }
       <button class="del-btn" onclick="removeGoal(${i})">✕</button>
     </div>`).join('');
 }
+
+function removeGoal(i){tGoals.splice(i,1);renderGoals();renderPart();}
 
 function renderPart(){
   const auto=new Set();
