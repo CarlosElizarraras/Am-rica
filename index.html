@@ -176,6 +176,10 @@ tr:hover td{background:#202020}
       <div class="card"><div class="section-title">⚽ Top Goleadores</div><div id="top-scorers"></div></div>
       <div class="card"><div class="section-title">🎯 Top Asistidores</div><div id="top-assists"></div></div>
     </div>
+    <div class="g2" style="margin-top:16px">
+      <div class="card"><div class="section-title">🏆 Carrera · Goles</div><div id="top-career-scorers"></div></div>
+      <div class="card"><div class="section-title">🏆 Carrera · Asistencias</div><div id="top-career-assists"></div></div>
+    </div>
   </div>
 
   <!-- PARTIDOS -->
@@ -362,9 +366,7 @@ function tStats(){
   matches.forEach(m=>{
     gf+=m.gf;ga+=m.ga;
     if(m.result==='W'){w++;pts+=3;}
-    else if(m.result==='WP'){w++;pts+=3;}  // penales gana = victoria
-    else if(m.result==='D'){d++;pts+=1;}
-    else if(m.result==='LP'){d++;pts+=1;}  // penales pierde = empate en puntos
+    else if(m.result==='WP'||m.result==='LP'||m.result==='D'){d++;pts+=1;}
     else l++;
   });
   const pj=matches.length;
@@ -434,6 +436,8 @@ function renderDash(){
     document.getElementById('recent-matches').innerHTML='<div class="empty">Sin partidos aún</div>';
     document.getElementById('top-scorers').innerHTML='<div class="empty">Sin datos</div>';
     document.getElementById('top-assists').innerHTML='<div class="empty">Sin datos</div>';
+    document.getElementById('top-career-scorers').innerHTML='<div class="empty">Sin datos</div>';
+    document.getElementById('top-career-assists').innerHTML='<div class="empty">Sin datos</div>';
     return;
   }
 
@@ -451,8 +455,10 @@ function renderDash(){
       <div style="font-family:Inter,sans-serif;font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Por Competición</div>
       ${comps.map(c=>{
         const cm=matches.filter(m=>m.comp===c);
-        const cw=cm.filter(m=>m.result==='W').length, cd=cm.filter(m=>m.result==='D').length;
-        return`<div class="comp-row"><span>${c}</span><span>${cm.length} PJ · <span style="color:#4ade80">${cw}V</span> · <span style="color:#facc15">${cd}E</span></span></div>`;
+        const cw=cm.filter(m=>m.result==='W'||m.result==='WP').length;
+        const cd=cm.filter(m=>m.result==='D'||m.result==='LP').length;
+        const cl=cm.filter(m=>m.result==='L').length;
+        return`<div class="comp-row"><span>${c}</span><span>${cm.length} PJ · <span style="color:#4ade80">${cw}V</span> · <span style="color:#facc15">${cd}E</span> · <span style="color:#f87171">${cl}D</span></span></div>`;
       }).join('')}
     </div>`;
 
@@ -471,6 +477,17 @@ function renderDash(){
   document.getElementById('top-assists').innerHTML=as.length
     ?as.map((p,i)=>`<div class="top-row"><span class="top-rank${i===0?' gold':''}">${i+1}</span><div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div><span class="top-val" style="color:#60A5FA">${p.sa}</span></div>`).join('')
     :'<div class="empty">Sin asistencias aún</div>';
+
+  // Carrera total = stats de temporada + carrera previa
+  const csc=squad.map(p=>({...p,tg:(ss[p.id]?.g||0)+p.cg})).filter(p=>p.tg>0).sort((a,b)=>b.tg-a.tg).slice(0,5);
+  document.getElementById('top-career-scorers').innerHTML=csc.length
+    ?csc.map((p,i)=>`<div class="top-row"><span class="top-rank${i===0?' gold':''}">${i+1}</span><div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div><span class="top-val" style="color:#FFD700">${p.tg}</span></div>`).join('')
+    :'<div class="empty">Sin datos</div>';
+
+  const cas=squad.map(p=>({...p,ta:(ss[p.id]?.a||0)+p.ca})).filter(p=>p.ta>0).sort((a,b)=>b.ta-a.ta).slice(0,5);
+  document.getElementById('top-career-assists').innerHTML=cas.length
+    ?cas.map((p,i)=>`<div class="top-row"><span class="top-rank${i===0?' gold':''}">${i+1}</span><div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div><span class="top-val" style="color:#60A5FA">${p.ta}</span></div>`).join('')
+    :'<div class="empty">Sin datos</div>';
 }
 
 /* ── PARTIDOS ── */
