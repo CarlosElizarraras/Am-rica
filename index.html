@@ -364,7 +364,7 @@ function sStats(){
   return s;
 }
 
-function pn(id){return squad.find(p=>p.id===id)?.name||'—';}
+function pn(id){return squad.find(p=>p.id==id)?.name||'<i style="color:#888">Jugador eliminado</i>';}
 function rc(r){return r==='W'?'#4ade80':r==='D'?'#facc15':'#f87171';}
 function rl(r){return r==='W'?'VICTORIA':r==='D'?'EMPATE':'DERROTA';}
 
@@ -509,9 +509,9 @@ function renderSquad(){
           return`<tr>
             <td class="player-num">${p.number}</td>
             <td class="player-name">${p.name}</td>
-            <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sg>0?'#FFD700':'#333'}">${sg}</b></td>
-            <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sa>0?'#60A5FA':'#333'}">${sa}</b></td>
-            <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sp>0?'#34D399':'#333'}">${sp}</b></td>
+            <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sg>0?'#FFD700':'#7a6000'}">${sg}</b></td>
+            <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sa>0?'#60A5FA':'#1e3a5f'}">${sa}</b></td>
+            <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sp>0?'#34D399':'#0d3d2a'}">${sp}</b></td>
             <td class="career-stat">${p.cg+sg}</td>
             <td class="career-stat">${p.ca+sa}</td>
             <td class="career-stat">${p.cp+sp}</td>
@@ -531,9 +531,9 @@ function renderSquad(){
           </div>
           <div class="pc-section-lbl">Temporada actual</div>
           <div class="pc-stats">
-            <div class="pc-stat"><div class="pc-stat-val" style="color:#FFD700">${sg}</div><div class="pc-stat-lbl">Goles</div></div>
-            <div class="pc-stat"><div class="pc-stat-val" style="color:#60A5FA">${sa}</div><div class="pc-stat-lbl">Asist.</div></div>
-            <div class="pc-stat"><div class="pc-stat-val" style="color:#34D399">${sp}</div><div class="pc-stat-lbl">PJ</div></div>
+            <div class="pc-stat"><div class="pc-stat-val" style="color:${sg>0?'#FFD700':'#7a6000'}">${sg}</div><div class="pc-stat-lbl">Goles</div></div>
+            <div class="pc-stat"><div class="pc-stat-val" style="color:${sa>0?'#60A5FA':'#1e3a5f'}">${sa}</div><div class="pc-stat-lbl">Asist.</div></div>
+            <div class="pc-stat"><div class="pc-stat-val" style="color:${sp>0?'#34D399':'#0d3d2a'}">${sp}</div><div class="pc-stat-lbl">PJ</div></div>
           </div>
           <div class="pc-section-lbl">Carrera en el club</div>
           <div class="pc-career">
