@@ -2,107 +2,164 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
 <title>Club América · Estadísticas</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:#0d0d0d;color:#e8e8e8;font-family:'Bebas Neue',Impact,sans-serif;min-height:100vh}
+body{background:#111;color:#e8e8e8;font-family:'Bebas Neue',sans-serif;min-height:100vh}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:#FFD700;border-radius:2px}
-.nb{background:none;border:none;cursor:pointer;padding:10px 18px;font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:2px;color:#888;transition:color .2s;border-bottom:2px solid transparent}
-.nb:hover{color:#FFD700}.nb.a{color:#FFD700;border-bottom-color:#FFD700}
-.card{background:#141414;border:1px solid #2a2a2a;border-radius:12px;padding:20px}
-.gb{background:#FFD700;color:#000;border:none;padding:9px 18px;border-radius:8px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;transition:all .2s}
-.gb:hover{background:#FFC000;transform:translateY(-1px)}.gb:disabled{opacity:.4;cursor:default;transform:none}
-.ob{background:transparent;color:#FFD700;border:1px solid #444;padding:7px 14px;border-radius:7px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;transition:all .2s}
-.ob:hover{border-color:#FFD700}
-.rb{background:transparent;color:#EF4444;border:1px solid #2a1a1a;padding:7px 14px;border-radius:7px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:13px;transition:all .2s}
-.rb:hover{border-color:#EF4444}
-input,select,textarea{background:#1e1e1e;border:1px solid #333;color:#f0f0f0;padding:9px 13px;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;width:100%;outline:none;transition:border .2s}
-input:focus,select:focus,textarea:focus{border-color:#FFD700}
-select option{background:#1e1e1e}
-label{font-family:'Inter',sans-serif;font-size:11px;color:#999;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:5px}
-.mo{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px}
-.md{background:#161616;border:1px solid #333;border-radius:16px;padding:28px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto}
-table{width:100%;border-collapse:collapse}
-th{text-align:left;padding:9px 13px;font-family:'Inter',sans-serif;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#888;border-bottom:1px solid #2a2a2a}
-td{padding:11px 13px;border-bottom:1px solid #1e1e1e;font-family:'Inter',sans-serif;font-size:14px;color:#d0d0d0}
-tr:hover td{background:#1c1c1c}
+
+main{max-width:1100px;margin:0 auto;padding:20px 16px}
+.view{display:none}.view.active{display:block}
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-@media(max-width:720px){.g2,.g3,.g4{grid-template-columns:1fr}}
-.chip{background:#1e1e1e;border:1px solid #333;border-radius:5px;padding:2px 9px;font-family:'Inter',sans-serif;font-size:12px;display:inline-block;margin:2px;color:#ddd}
-.pb{height:3px;background:#1a1a1a;border-radius:2px;overflow:hidden;margin-top:5px}
-.pf{height:100%;border-radius:2px;transition:width .5s}
+.g7{display:grid;grid-template-columns:repeat(7,1fr);gap:10px}
+@media(max-width:700px){.g7{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:420px){.g7{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){.g2,.g3{grid-template-columns:1fr}}
+
+header{background:#161616;border-bottom:2px solid #FFD700;position:sticky;top:0;z-index:100}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;max-width:1100px;margin:0 auto;gap:8px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,#FFD700,#FF8C00);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.logo-name{font-size:18px;letter-spacing:3px;color:#FFD700;line-height:1}
+.logo-sub{font-family:'Inter',sans-serif;font-size:10px;color:#999;letter-spacing:1px;text-transform:uppercase}
+nav{display:flex;align-items:center;gap:0}
+.nb{background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;padding:8px 10px;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;color:#aaa;transition:all .15s;white-space:nowrap}
+.nb:hover{color:#FFD700}.nb.a{color:#FFD700;border-bottom-color:#FFD700}
+.exp-btn{background:transparent;border:1px solid #444;color:#aaa;padding:5px 10px;border-radius:6px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:1px;transition:all .15s;margin-left:8px}
+.exp-btn:hover{border-color:#FFD700;color:#FFD700}
+@media(max-width:480px){.logo-sub{display:none}.nb{padding:8px 7px;font-size:12px;letter-spacing:0}.exp-btn{font-size:11px;padding:4px 7px}}
+
+.card{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:12px;padding:18px}
+.section-title{font-size:15px;letter-spacing:2px;color:#FFD700;margin-bottom:16px}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:10px;flex-wrap:wrap}
+.page-title{font-size:22px;letter-spacing:3px;color:#FFD700}
+
+/* HERO — 7 stats en una fila */
+.stat-box{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:10px;padding:14px 10px;text-align:center;border-top:3px solid var(--c,#FFD700)}
+.stat-lbl{font-family:'Inter',sans-serif;font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+.stat-val{font-size:36px;line-height:1;color:var(--c,#FFD700)}
+.stat-sub{font-family:'Inter',sans-serif;font-size:10px;color:#888;margin-top:4px}
+@media(max-width:700px){.stat-val{font-size:28px}}
+
+.gb{background:#FFD700;color:#000;border:none;padding:9px 16px;border-radius:8px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px;transition:all .15s;white-space:nowrap}
+.gb:hover{background:#FFC000;transform:translateY(-1px)}.gb:disabled{opacity:.4;cursor:default;transform:none}
+.ob{background:transparent;color:#FFD700;border:1px solid #FFD700;padding:6px 12px;border-radius:7px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:1px;transition:all .15s}
+.ob:hover{background:#FFD70015}
+.rb{background:transparent;color:#f87171;border:1px solid #f87171;padding:6px 12px;border-radius:7px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:13px;transition:all .15s}
+.rb:hover{background:#f8717115}
+.ob-sm{background:transparent;color:#FFD700;border:1px solid #444;padding:4px 10px;border-radius:6px;cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:12px;transition:all .15s}
+.ob-sm:hover{border-color:#FFD700}
+
+input,select,textarea{background:#222;border:1px solid #3a3a3a;color:#f0f0f0;padding:9px 12px;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;width:100%;outline:none;transition:border .15s}
+input:focus,select:focus,textarea:focus{border-color:#FFD700}
+select option{background:#222}
+label{font-family:'Inter',sans-serif;font-size:11px;color:#bbb;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:5px}
 .frow{display:flex;flex-direction:column;gap:14px}
-.fbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
-.section-title{font-size:16px;letter-spacing:2px;margin-bottom:18px;color:#FFD700}
-.empty{font-family:'Inter',sans-serif;font-size:14px;color:#666;text-align:center;padding:20px 0}
-.goal-row{display:flex;align-items:center;gap:8px;background:#1e1e1e;border-radius:7px;padding:7px 12px;margin-bottom:7px}
-.goal-num{font-size:16px;color:#aaa;min-width:18px}
+.fbtns{display:flex;gap:10px;justify-content:flex-end;margin-top:6px;flex-wrap:wrap}
+
+.mo{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:16px;overflow-y:auto}
+.md{background:#1a1a1a;border:1px solid #3a3a3a;border-radius:16px;padding:22px;width:100%;max-width:520px;margin:auto}
+.modal-title{font-size:18px;letter-spacing:2px;color:#FFD700;margin-bottom:20px}
+.hidden{display:none}
+.mdiv{border-top:1px solid #2e2e2e;padding-top:14px}
+.mdiv-title{font-size:14px;letter-spacing:2px;color:#FFD700;margin-bottom:4px}
+.mdiv-sub{font-family:'Inter',sans-serif;font-size:11px;color:#aaa;margin-bottom:10px}
+
+.table-wrap{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:10px;overflow:hidden}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:9px 12px;font-family:'Inter',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#aaa;border-bottom:1px solid #2e2e2e;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #222;font-family:'Inter',sans-serif;font-size:13px;color:#ddd}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#202020}
+.player-num{color:#bbb;font-family:'Bebas Neue',sans-serif;font-size:18px}
+.player-name{color:#f0f0f0;font-weight:500;font-size:14px}
+.career-stat{color:#ccc}
+
+.squad-table{display:block}
+.player-card-mobile{display:none}
+@media(max-width:640px){.squad-table{display:none}.player-card-mobile{display:block}}
+.pc{background:#1e1e1e;border:1px solid #2e2e2e;border-radius:10px;padding:14px;margin-bottom:10px}
+.pc-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.pc-num{font-size:30px;color:#FFD700;min-width:40px;line-height:1}
+.pc-name{font-family:'Inter',sans-serif;font-size:15px;color:#f0f0f0;font-weight:600}
+.pc-pos{font-family:'Inter',sans-serif;font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.pc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
+.pc-stat{background:#252525;border-radius:8px;padding:10px 6px;text-align:center}
+.pc-stat-val{font-size:24px;line-height:1;margin-bottom:3px}
+.pc-stat-lbl{font-family:'Inter',sans-serif;font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px}
+.pc-career{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+.pc-career-item{background:#252525;border-radius:6px;padding:7px 6px;text-align:center}
+.pc-career-val{font-family:'Inter',sans-serif;font-size:15px;font-weight:600;color:#ccc}
+.pc-career-lbl{font-family:'Inter',sans-serif;font-size:9px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.pc-actions{display:flex;gap:8px}
+.pc-section-lbl{font-family:'Inter',sans-serif;font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+
+.match-card{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.match-score-wrap{min-width:70px;text-align:center;flex-shrink:0}
+.match-score{font-size:30px;line-height:1}
+.match-result-lbl{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+.match-info{flex:1;min-width:140px}
+.match-rival{font-family:'Inter',sans-serif;font-size:15px;color:#f0f0f0;font-weight:600}
+.match-meta{font-family:'Inter',sans-serif;font-size:11px;color:#aaa;margin-top:2px}
+.match-goals{margin-top:8px;display:flex;flex-wrap:wrap;gap:5px}
+.chip{background:#222;border:1px solid #333;border-radius:5px;padding:3px 8px;font-family:'Inter',sans-serif;font-size:12px;color:#ddd;display:inline-block}
+.match-notes-txt{font-family:'Inter',sans-serif;font-size:12px;color:#aaa;margin-top:5px;font-style:italic}
+.match-actions{display:flex;gap:8px;flex-shrink:0}
+
+.pj-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #222}
+.pj-row:last-child{border-bottom:none}
+.pj-left{font-family:'Inter',sans-serif;font-size:13px;color:#e0e0e0}
+.pj-date{font-family:'Inter',sans-serif;font-size:11px;color:#aaa;margin-top:1px}
+.pj-score{font-size:20px;text-align:right;line-height:1}
+.pj-result-lbl{font-family:'Inter',sans-serif;font-size:10px;font-weight:600;text-align:right;text-transform:uppercase;letter-spacing:1px}
+.top-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #222}
+.top-row:last-child{border-bottom:none}
+.top-rank{font-size:18px;min-width:24px;color:#555}
+.top-rank.gold{color:#FFD700}
+.top-name{font-family:'Inter',sans-serif;font-size:14px;color:#f0f0f0}
+.top-pos{font-family:'Inter',sans-serif;font-size:11px;color:#aaa}
+.top-val{font-size:28px;margin-left:auto}
+.comp-row{display:flex;justify-content:space-between;font-family:'Inter',sans-serif;font-size:13px;color:#ccc;padding:4px 0}
+.pb{height:4px;background:#252525;border-radius:2px;overflow:hidden;margin-top:5px}
+.pf{height:100%;border-radius:2px;transition:width .5s}
+.empty{font-family:'Inter',sans-serif;font-size:14px;color:#777;text-align:center;padding:24px 0}
+
+.goal-row{display:flex;align-items:center;gap:8px;background:#222;border-radius:7px;padding:7px 11px;margin-bottom:6px}
+.goal-num{font-size:14px;color:#aaa;min-width:18px}
 .goal-name{font-family:'Inter',sans-serif;font-size:13px;color:#f0f0f0;flex:1}
 .goal-assist{font-family:'Inter',sans-serif;font-size:13px;color:#bbb}
-.del-btn{background:none;border:none;color:#EF4444;cursor:pointer;font-size:15px}
-.stat-big{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#aaa;min-width:26px}
-.match-score{font-family:'Bebas Neue',sans-serif;font-size:34px;line-height:1}
-.match-label{font-family:'Inter',sans-serif;font-size:10px;margin-top:2px}
-.match-rival{font-family:'Inter',sans-serif;font-size:15px;color:#f0f0f0;font-weight:500}
-.match-meta{font-family:'Inter',sans-serif;font-size:11px;color:#aaa;margin-top:2px}
-.match-notes{font-family:'Inter',sans-serif;font-size:12px;color:#888;margin-top:5px;font-style:italic}
-.match-actions{display:flex;gap:8px}
-.hero-label{font-family:'Inter',sans-serif;font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
-.hero-val{font-family:'Bebas Neue',sans-serif;font-size:46px;line-height:1}
-.hero-sub{font-family:'Inter',sans-serif;font-size:11px;color:#888;margin-top:6px}
-.pos-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:8px}
-.pos-label{font-size:15px;letter-spacing:2px}
-.player-num{color:#aaa;font-family:'Bebas Neue',sans-serif;font-size:18px}
-.player-name{color:#f0f0f0;font-weight:500}
-.career-stat{color:#aaa}
-.hidden{display:none}
-.sep{border-top:1px solid #1e1e1e;padding-top:14px;margin-top:4px}
-.sep-label{font-size:13px;letter-spacing:2px;color:#888;margin-bottom:12px}
-.header-wrap{max-width:1180px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.logo-wrap{display:flex;align-items:center;gap:12px;padding:14px 0}
-.logo-icon{width:40px;height:40px;background:linear-gradient(135deg,#FFD700,#FF8C00);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px}
-.logo-name{font-size:20px;letter-spacing:3px;color:#FFD700}
-.logo-sub{font-family:'Inter',sans-serif;font-size:10px;color:#aaa;letter-spacing:2px;text-transform:uppercase}
-nav{display:flex}
-main{max-width:1180px;margin:0 auto;padding:26px 24px}
-.view{display:none}.view.active{display:block}
-.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
-.page-title{font-size:26px;letter-spacing:3px;color:#FFD700}
-.comp-row{display:flex;justify-content:space-between;font-family:'Inter',sans-serif;font-size:13px;color:#aaa;padding:3px 0}
-.pj-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #161616}
-.pj-left{font-family:'Inter',sans-serif;font-size:13px;color:#e0e0e0}
-.pj-date{font-family:'Inter',sans-serif;font-size:11px;color:#888}
-.pj-score{font-size:22px;text-align:right}
-.pj-result{font-family:'Inter',sans-serif;font-size:11px}
-.top-row{display:flex;align-items:center;gap:12px;padding:7px 0;border-bottom:1px solid #161616}
-.top-rank{font-size:20px;min-width:26px}
-.top-name{font-family:'Inter',sans-serif;font-size:14px;color:#f0f0f0}
-.top-pos{font-family:'Inter',sans-serif;font-size:11px;color:#888}
-.top-val{font-family:'Bebas Neue',sans-serif;font-size:30px}
-.match-card{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.match-score-wrap{min-width:80px;text-align:center}
-.match-info{flex:1;min-width:160px}
+.del-btn{background:none;border:none;color:#f87171;cursor:pointer;font-size:15px;padding:0 2px}
+
+#participants-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+@media(max-width:420px){#participants-grid{grid-template-columns:repeat(2,1fr)}}
+.pchk{display:flex;align-items:center;gap:5px;cursor:pointer;background:#222;border:1px solid #333;border-radius:6px;padding:5px 7px;font-family:'Inter',sans-serif;font-size:11px;color:#aaa;transition:all .15s;user-select:none}
+.pchk.on{background:#1a2e1a;border-color:#2d5a2d;color:#e0e0e0}
+.pchk.auto{background:#1a2a1a;border-color:#2d4a2d;color:#c8e6c9;cursor:default}
+.pchk input{width:13px;height:13px;accent-color:#4ade80;flex-shrink:0}
+
+/* Export/Import modal */
+.exp-textarea{font-family:'Inter',monospace;font-size:11px;background:#0d0d0d;border:1px solid #333;color:#ccc;padding:10px;border-radius:8px;width:100%;height:100px;resize:vertical;word-break:break-all}
 </style>
 </head>
 <body>
 
-<header style="background:#111;border-bottom:1px solid #2d2d2d">
-  <div class="header-wrap">
-    <div class="logo-wrap">
+<header>
+  <div class="header-inner">
+    <div class="logo">
       <div class="logo-icon">🦅</div>
       <div>
         <div class="logo-name">CLUB AMÉRICA</div>
-        <div class="logo-sub">Sistema de Estadísticas</div>
+        <div class="logo-sub">Estadísticas</div>
       </div>
     </div>
     <nav>
-      <button class="nb a" onclick="switchView('dashboard')">📊 Dashboard</button>
-      <button class="nb" onclick="switchView('matches')">⚽ Partidos</button>
-      <button class="nb" onclick="switchView('squad')">👥 Plantilla</button>
+      <button class="nb a" onclick="switchView('dashboard',this)">📊 Dashboard</button>
+      <button class="nb"   onclick="switchView('matches',this)">⚽ Partidos</button>
+      <button class="nb"   onclick="switchView('squad',this)">👥 Plantilla</button>
+      <button class="exp-btn" onclick="openExport()">💾 Datos</button>
     </nav>
   </div>
 </header>
@@ -110,66 +167,50 @@ main{max-width:1180px;margin:0 auto;padding:26px 24px}
 <main>
   <!-- DASHBOARD -->
   <div id="view-dashboard" class="view active">
-    <div class="g4" style="margin-bottom:20px" id="hero-stats"></div>
-    <div class="g2" style="margin-bottom:20px">
-      <div class="card">
-        <div class="section-title">Rendimiento de la Temporada</div>
-        <div id="perf-bars"></div>
-        <div id="comp-breakdown"></div>
-      </div>
-      <div class="card">
-        <div class="section-title">Últimos Resultados</div>
-        <div id="recent-matches"></div>
-      </div>
+    <div class="g7" style="margin-bottom:20px" id="hero-stats"></div>
+    <div class="g2" style="margin-bottom:16px">
+      <div class="card"><div class="section-title">Rendimiento</div><div id="perf-bars"></div><div id="comp-breakdown"></div></div>
+      <div class="card"><div class="section-title">Últimos Resultados</div><div id="recent-matches"></div></div>
     </div>
     <div class="g2">
-      <div class="card">
-        <div class="section-title">⚽ Top Goleadores — Temporada</div>
-        <div id="top-scorers"></div>
-      </div>
-      <div class="card">
-        <div class="section-title">🎯 Top Asistidores — Temporada</div>
-        <div id="top-assists"></div>
-      </div>
+      <div class="card"><div class="section-title">⚽ Top Goleadores</div><div id="top-scorers"></div></div>
+      <div class="card"><div class="section-title">🎯 Top Asistidores</div><div id="top-assists"></div></div>
     </div>
   </div>
 
-  <!-- MATCHES -->
+  <!-- PARTIDOS -->
   <div id="view-matches" class="view">
     <div class="page-header">
-      <div class="page-title">Partidos de la Temporada</div>
-      <button class="gb" onclick="openAddMatch()">+ Registrar Partido</button>
+      <div class="page-title">Partidos</div>
+      <button class="gb" onclick="openAddMatch()">+ Registrar</button>
     </div>
     <div id="matches-list"></div>
   </div>
 
-  <!-- SQUAD -->
+  <!-- PLANTILLA -->
   <div id="view-squad" class="view">
     <div class="page-header">
       <div class="page-title">Plantilla</div>
-      <button class="gb" onclick="openAddPlayer()">+ Añadir Jugador</button>
+      <button class="gb" onclick="openAddPlayer()">+ Jugador</button>
     </div>
     <div id="squad-list"></div>
   </div>
 </main>
 
 <!-- MATCH MODAL -->
-<div id="match-modal" class="mo hidden">
+<div id="match-modal" class="mo hidden" onclick="if(event.target===this)closeMatchModal()">
   <div class="md">
-    <div id="match-modal-title" style="font-size:20px;letter-spacing:2px;color:#FFD700;margin-bottom:22px">Registrar Partido</div>
+    <div id="match-modal-title" class="modal-title">Registrar Partido</div>
     <div class="frow">
       <div class="g2">
         <div><label>Fecha</label><input type="date" id="m-date"/></div>
         <div><label>Rival</label><input type="text" id="m-rival" placeholder="Nombre del rival"/></div>
       </div>
       <div class="g3">
-        <div><label>Goles A Favor</label><input type="number" id="m-gf" min="0" placeholder="0"/></div>
-        <div><label>Goles En Contra</label><input type="number" id="m-ga" min="0" placeholder="0"/></div>
+        <div><label>Goles a favor</label><input type="number" id="m-gf" min="0" placeholder="0"/></div>
+        <div><label>Goles en contra</label><input type="number" id="m-ga" min="0" placeholder="0"/></div>
         <div><label>Condición</label>
-          <select id="m-home">
-            <option value="1">🏠 Local</option>
-            <option value="0">✈️ Visita</option>
-          </select>
+          <select id="m-home"><option value="1">🏠 Local</option><option value="0">✈️ Visita</option></select>
         </div>
       </div>
       <div><label>Competición</label>
@@ -177,40 +218,40 @@ main{max-width:1180px;margin:0 auto;padding:26px 24px}
           <option>Liga MX</option><option>Copa MX</option><option>Leagues Cup</option><option>Champions Cup</option><option>Amistoso</option>
         </select>
       </div>
-      <div style="border-top:1px solid #1e1e1e;padding-top:14px">
-        <div style="font-size:15px;letter-spacing:2px;color:#FFD700;margin-bottom:12px">Goles del Partido</div>
+      <div class="mdiv">
+        <div class="mdiv-title">Goles del Partido</div>
         <div id="goals-list-display"></div>
-        <div style="display:flex;gap:8px;margin-top:8px;align-items:flex-end">
-          <div style="flex:1"><label>Anotador</label><select id="g-scorer"><option value="">— Seleccionar —</option></select></div>
-          <div style="flex:1"><label>Asistidor (opcional)</label><select id="g-assist"><option value="">— Ninguno —</option></select></div>
-          <button class="gb" onclick="addGoal()" style="white-space:nowrap">+ Gol</button>
+        <div class="g2" style="margin-top:8px">
+          <div><label>Anotador</label><select id="g-scorer"><option value="">— Seleccionar —</option></select></div>
+          <div><label>Asistidor (opcional)</label><select id="g-assist"><option value="">— Ninguno —</option></select></div>
         </div>
+        <button class="ob-sm" onclick="addGoal()" style="margin-top:8px">+ Agregar Gol</button>
       </div>
-      <div style="border-top:1px solid #1e1e1e;padding-top:14px">
-        <div style="font-size:15px;letter-spacing:2px;color:#FFD700;margin-bottom:6px">Jugadores que Participaron</div>
-        <div style="font-family:Inter,sans-serif;font-size:11px;color:#888;margin-bottom:10px">Los goleadores y asistidores se marcan automáticamente</div>
-        <div id="participants-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px"></div>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button class="ob" onclick="selectAllParticipants()" style="font-size:12px;padding:5px 12px">Todos</button>
-          <button class="ob" onclick="clearParticipants()" style="font-size:12px;padding:5px 12px">Ninguno</button>
+      <div class="mdiv">
+        <div class="mdiv-title">Jugadores que Participaron</div>
+        <div class="mdiv-sub">Los goleadores/asistidores se marcan solos · <span style="color:#4ade80">verde = jugó</span></div>
+        <div id="participants-grid"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="ob-sm" onclick="selectAllP()">✓ Todos</button>
+          <button class="ob-sm" onclick="clearP()">✕ Limpiar</button>
         </div>
       </div>
       <div><label>Notas</label><textarea id="m-notes" rows="2" placeholder="Observaciones..."></textarea></div>
       <div class="fbtns">
         <button class="ob" onclick="closeMatchModal()">Cancelar</button>
-        <button class="gb" id="match-save-btn" onclick="saveMatch()">Guardar Partido</button>
+        <button class="gb" onclick="saveMatch()">Guardar</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- PLAYER MODAL -->
-<div id="player-modal" class="mo hidden">
+<div id="player-modal" class="mo hidden" onclick="if(event.target===this)closePlayerModal()">
   <div class="md">
-    <div id="player-modal-title" style="font-size:20px;letter-spacing:2px;color:#FFD700;margin-bottom:22px">Añadir Jugador</div>
+    <div id="player-modal-title" class="modal-title">Añadir Jugador</div>
     <div class="frow">
       <div class="g2">
-        <div><label>Nombre Completo</label><input type="text" id="p-name" placeholder="Nombre del jugador"/></div>
+        <div><label>Nombre</label><input type="text" id="p-name" placeholder="Nombre completo"/></div>
         <div><label>Número</label><input type="number" id="p-number" min="1" max="99"/></div>
       </div>
       <div><label>Posición</label>
@@ -219,8 +260,8 @@ main{max-width:1180px;margin:0 auto;padding:26px 24px}
           <option value="MED">Mediocampista</option><option value="DEL">Delantero</option>
         </select>
       </div>
-      <div class="sep">
-        <div class="sep-label">ESTADÍSTICAS DE CARRERA EN EL CLUB</div>
+      <div class="mdiv">
+        <div class="mdiv-title">Carrera en el Club</div>
         <div class="g3">
           <div><label>Goles</label><input type="number" id="p-cg" min="0" value="0"/></div>
           <div><label>Asistencias</label><input type="number" id="p-ca" min="0" value="0"/></div>
@@ -229,499 +270,473 @@ main{max-width:1180px;margin:0 auto;padding:26px 24px}
       </div>
       <div class="fbtns">
         <button class="ob" onclick="closePlayerModal()">Cancelar</button>
-        <button class="gb" onclick="savePlayer()">Guardar Jugador</button>
+        <button class="gb" onclick="savePlayer()">Guardar</button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- EXPORT/IMPORT MODAL -->
+<div id="exp-modal" class="mo hidden" onclick="if(event.target===this)closeExport()">
+  <div class="md">
+    <div class="modal-title">💾 Exportar / Importar Datos</div>
+    <div class="frow">
+      <div>
+        <div style="font-family:Inter,sans-serif;font-size:13px;color:#ccc;margin-bottom:10px">
+          Para pasar tus datos a otro dispositivo: copia el código de abajo, ábrelo en el otro dispositivo, pégalo en el campo de importar y presiona <b style="color:#FFD700">Importar</b>.
+        </div>
+        <label>Tu código de datos (copia esto)</label>
+        <textarea class="exp-textarea" id="exp-output" readonly></textarea>
+        <button class="gb" onclick="copyData()" style="margin-top:8px;width:100%">📋 Copiar al Portapapeles</button>
+      </div>
+      <div class="mdiv">
+        <div class="mdiv-title">Importar desde otro dispositivo</div>
+        <div class="mdiv-sub">Pega el código de exportación aquí. <span style="color:#f87171">Esto reemplazará todos tus datos actuales.</span></div>
+        <textarea class="exp-textarea" id="imp-input" placeholder="Pega el código aquí..."></textarea>
+        <button class="gb" onclick="importData()" style="margin-top:8px;width:100%;background:#4ade80">✓ Importar y Reemplazar</button>
+      </div>
+      <div class="fbtns"><button class="ob" onclick="closeExport()">Cerrar</button></div>
+    </div>
+  </div>
+</div>
+
 <script>
-// ─── STATE ───────────────────────────────────────────────────────────────────
-const STORAGE_KEY = 'america_stats_v1';
-const POS_COLORS = { POR: '#F59E0B', DEF: '#3B82F6', MED: '#10B981', DEL: '#EF4444' };
+const KEY='america_v3';
+const PC={POR:'#F59E0B',DEF:'#60A5FA',MED:'#34D399',DEL:'#F87171'};
 
-function loadState() {
-  try {
-    const s = localStorage.getItem(STORAGE_KEY);
-    if (s) return JSON.parse(s);
-  } catch(e) {}
-  return null;
-}
-
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ squad, matches }));
-}
-
-let squad = [
-  { id:1, name:"Guillermo Ochoa", number:13, position:"POR", cg:0, ca:0, cp:312 },
-  { id:2, name:"Jorge Sánchez", number:2, position:"DEF", cg:3, ca:8, cp:98 },
-  { id:3, name:"Sebastián Cáceres", number:3, position:"DEF", cg:5, ca:2, cp:87 },
-  { id:4, name:"Igor Lichnovsky", number:4, position:"DEF", cg:4, ca:1, cp:110 },
-  { id:5, name:"Miguel Layún", number:16, position:"DEF", cg:6, ca:14, cp:145 },
-  { id:6, name:"Álvaro Fidalgo", number:8, position:"MED", cg:18, ca:22, cp:120 },
-  { id:7, name:"Richard Sánchez", number:5, position:"MED", cg:7, ca:15, cp:103 },
-  { id:8, name:"Pedro Aquino", number:20, position:"MED", cg:3, ca:5, cp:76 },
-  { id:9, name:"Alejandro Zendejas", number:11, position:"DEL", cg:32, ca:28, cp:130 },
-  { id:10, name:"Henry Martín", number:21, position:"DEL", cg:95, ca:30, cp:210 },
-  { id:11, name:"Jonathan Rodríguez", number:9, position:"DEL", cg:68, ca:20, cp:148 },
-  { id:12, name:"Diego Valdés", number:10, position:"MED", cg:24, ca:35, cp:118 },
-  { id:13, name:"Brian Rodríguez", number:7, position:"DEL", cg:22, ca:18, cp:89 },
-  { id:14, name:"Óscar Jiménez", number:1, position:"POR", cg:0, ca:0, cp:65 },
-  { id:15, name:"Emilio Lara", number:15, position:"DEF", cg:2, ca:6, cp:74 },
+const DEFAULT_SQUAD=[
+  {id:101,name:'Luis Malagón',      number:1, position:'POR',cg:0,ca:0,cp:147},
+  {id:102,name:'Rodolfo Cota',      number:30,position:'POR',cg:0,ca:0,cp:12},
+  {id:103,name:'Israel Reyes',      number:3, position:'DEF',cg:3,ca:0,cp:105},
+  {id:104,name:'Sebastián Cáceres', number:4, position:'DEF',cg:3,ca:3,cp:167},
+  {id:105,name:'Kevin Álvarez',     number:5, position:'DEF',cg:4,ca:9,cp:81},
+  {id:106,name:'Thiago Espinosa',   number:22,position:'DEF',cg:0,ca:0,cp:0},
+  {id:107,name:'Cristián Borja',    number:26,position:'DEF',cg:3,ca:1,cp:44},
+  {id:108,name:'Ramón Juárez',      number:29,position:'DEF',cg:2,ca:1,cp:97},
+  {id:109,name:'Jonathan Dos Santos',number:6,position:'MED',cg:1,ca:2,cp:129},
+  {id:110,name:'Alan Cervantes',    number:13,position:'MED',cg:1,ca:0,cp:40},
+  {id:111,name:'Rodrigo Dourado',   number:17,position:'MED',cg:0,ca:0,cp:0},
+  {id:112,name:'Alexis Gutiérrez',  number:20,position:'MED',cg:0,ca:0,cp:1},
+  {id:113,name:'Raphael Veiga',     number:23,position:'MED',cg:0,ca:0,cp:0},
+  {id:114,name:'Erick Sánchez',     number:28,position:'MED',cg:3,ca:3,cp:48},
+  {id:115,name:'Vinicius Lima',     number:45,position:'MED',cg:0,ca:0,cp:0},
+  {id:116,name:'Brian Rodríguez',   number:7, position:'DEL',cg:24,ca:15,cp:104},
+  {id:117,name:'Henry Martín',      number:9, position:'DEL',cg:117,ca:52,cp:299},
+  {id:118,name:'Alejandro Zendejas',number:10,position:'DEL',cg:43,ca:24,cp:154},
+  {id:119,name:'Víctor Dávila',     number:11,position:'DEL',cg:34,ca:9,cp:0},
+  {id:120,name:'Isías Violante',    number:12,position:'DEL',cg:0,ca:0,cp:1},
+  {id:121,name:'José Zúñiga',       number:19,position:'DEL',cg:0,ca:0,cp:1},
+  {id:122,name:'Patricio Salas',    number:33,position:'DEL',cg:0,ca:0,cp:7},
 ];
-let matches = [];
 
-const saved = loadState();
-if (saved) { squad = saved.squad; matches = saved.matches; }
+let squad=[...DEFAULT_SQUAD];
+let matches=[];
 
-// Temp goals list for modal
-let editingMatchId = null;
-let tempGoals = []; // [{scorer: id, assist: id|null}]
-let tempParticipants = new Set(); // set of player ids who played
-let editingPlayerId = null;
+try{
+  const s=JSON.parse(localStorage.getItem(KEY));
+  if(s?.squad&&s.squad.length>0) squad=s.squad;
+  if(s?.matches) matches=s.matches;
+}catch(e){}
 
-// ─── COMPUTED ────────────────────────────────────────────────────────────────
-function getTeamStats() {
-  let w=0,d=0,l=0,gf=0,ga=0;
-  matches.forEach(m => {
-    gf += m.gf; ga += m.ga;
-    if (m.result==='W') w++;
-    else if (m.result==='D') d++;
+function save(){localStorage.setItem(KEY,JSON.stringify({squad,matches}));}
+
+function tStats(){
+  let w=0,d=0,l=0,gf=0,ga=0,pts=0;
+  matches.forEach(m=>{
+    gf+=m.gf;ga+=m.ga;
+    if(m.result==='W'){w++;pts+=3;}
+    else if(m.result==='D'){d++;pts+=1;}
     else l++;
   });
-  return { played: matches.length, w, d, l, gf, ga, gd: gf-ga, pts: w*3+d };
+  const pj=matches.length;
+  const efec=pj>0?((pts/(pj*3))*100).toFixed(1):0;
+  return{pj,w,d,l,gf,ga,pts,efec};
 }
 
-function getSeasonStats() {
-  const s = {};
-  squad.forEach(p => { s[p.id] = { goals:0, assists:0, apps:0 }; });
-  matches.forEach(m => {
-    (m.scorers||[]).forEach(sid => { if(sid && s[sid]) s[sid].goals++; });
-    (m.assisters||[]).forEach(aid => { if(aid && s[aid]) s[aid].assists++; });
-    (m.participants||[]).forEach(pid => { if(pid && s[pid]) s[pid].apps++; });
+function sStats(){
+  const s={};
+  squad.forEach(p=>{s[p.id]={g:0,a:0,p:0};});
+  matches.forEach(m=>{
+    (m.scorers||[]).forEach(id=>{if(id&&s[id])s[id].g++;});
+    (m.assisters||[]).forEach(id=>{if(id&&s[id])s[id].a++;});
+    (m.participants||[]).forEach(id=>{if(id&&s[id])s[id].p++;});
   });
   return s;
 }
 
-function getPlayerName(id) {
-  const p = squad.find(x => x.id === id);
-  return p ? p.name : '—';
-}
+function pn(id){return squad.find(p=>p.id===id)?.name||'—';}
+function rc(r){return r==='W'?'#4ade80':r==='D'?'#facc15':'#f87171';}
+function rl(r){return r==='W'?'VICTORIA':r==='D'?'EMPATE':'DERROTA';}
 
-function resultColor(r) {
-  return r==='W' ? '#10B981' : r==='D' ? '#F59E0B' : '#EF4444';
-}
-function resultLabel(r) {
-  return r==='W' ? 'VICTORIA' : r==='D' ? 'EMPATE' : 'DERROTA';
-}
-
-// ─── VIEWS ───────────────────────────────────────────────────────────────────
-let currentView = 'dashboard';
-
-function switchView(v) {
-  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+function switchView(v,btn){
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('active'));
   document.getElementById('view-'+v).classList.add('active');
-  document.querySelectorAll('.nb').forEach(b => b.classList.remove('a'));
-  event.target.classList.add('a');
-  currentView = v;
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('a'));
+  btn.classList.add('a');
   renderAll();
 }
 
-// ─── RENDER ──────────────────────────────────────────────────────────────────
-function renderAll() {
-  renderDashboard();
-  renderMatches();
-  renderSquad();
-}
+function renderAll(){renderDash();renderMatches();renderSquad();}
 
-function renderDashboard() {
-  const ts = getTeamStats();
-  const ss = getSeasonStats();
+/* ── DASHBOARD ── */
+function renderDash(){
+  const ts=tStats(),ss=sStats();
 
-  // Hero stats
-  const heroData = [
-    { l:'Puntos', v:ts.pts, s:`${ts.played} partidos`, c:'#FFD700' },
-    { l:'Victorias', v:ts.w, s:`${ts.played>0?Math.round(ts.w/ts.played*100):0}% efectividad`, c:'#10B981' },
-    { l:'Goles', v:ts.gf, s:`${ts.ga} en contra`, c:'#3B82F6' },
-    { l:'Diferencia', v:(ts.gd>0?'+':'')+ts.gd, s:`${ts.w}V ${ts.d}E ${ts.l}D`, c:ts.gd>=0?'#10B981':'#EF4444' },
+  // 7-stat bar
+  const boxes=[
+    {l:'PJ', v:ts.pj,  c:'#e8e8e8', sub:'Jugados'},
+    {l:'V',  v:ts.w,   c:'#4ade80', sub:`${ts.pts} pts`},
+    {l:'E',  v:ts.d,   c:'#facc15', sub:'Empates'},
+    {l:'D',  v:ts.l,   c:'#f87171', sub:'Derrotas'},
+    {l:'GF', v:ts.gf,  c:'#60A5FA', sub:'A favor'},
+    {l:'GC', v:ts.ga,  c:'#fb923c', sub:'En contra'},
+    {l:'%EF',v:ts.efec+'%', c:'#a78bfa', sub:'Efectividad'},
   ];
-  document.getElementById('hero-stats').innerHTML = heroData.map(({l,v,s,c}) => `
-    <div class="card" style="text-align:center;border-top:3px solid ${c}">
-      <div class="hero-label">${l}</div>
-      <div class="hero-val" style="color:${c}">${v}</div>
-      <div class="hero-sub">${s}</div>
+  document.getElementById('hero-stats').innerHTML=boxes.map(({l,v,c,sub})=>`
+    <div class="stat-box" style="--c:${c}">
+      <div class="stat-lbl">${l}</div>
+      <div class="stat-val">${v}</div>
+      <div class="stat-sub">${sub}</div>
     </div>`).join('');
 
-  // Performance bars
-  const perfEl = document.getElementById('perf-bars');
-  if (ts.played === 0) {
-    perfEl.innerHTML = '<div class="empty">Sin partidos registrados</div>';
-    document.getElementById('comp-breakdown').innerHTML = '';
-  } else {
-    perfEl.innerHTML = [['Victorias',ts.w,'#10B981'],['Empates',ts.d,'#F59E0B'],['Derrotas',ts.l,'#EF4444']].map(([lb,val,c]) => `
-      <div style="margin-bottom:12px">
-        <div style="display:flex;justify-content:space-between;font-family:Inter,sans-serif;font-size:13px;color:#888;margin-bottom:3px">
-          <span>${lb}</span><span style="color:${c};font-weight:600">${val}</span>
-        </div>
-        <div class="pb"><div class="pf" style="width:${ts.played>0?(val/ts.played)*100:0}%;background:${c}"></div></div>
-      </div>`).join('');
-
-    const comps = [...new Set(matches.map(m => m.comp))];
-    document.getElementById('comp-breakdown').innerHTML = `
-      <div style="margin-top:18px;border-top:1px solid #1a1a1a;padding-top:14px">
-        <div style="font-family:Inter,sans-serif;font-size:11px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px">Por Competición</div>
-        ${comps.map(comp => {
-          const cms = matches.filter(m => m.comp===comp);
-          return `<div class="comp-row"><span>${comp}</span><span>${cms.length} PJ · <span style="color:#10B981">${cms.filter(m=>m.result==='W').length}V</span> · <span style="color:#F59E0B">${cms.filter(m=>m.result==='D').length}E</span></span></div>`;
-        }).join('')}
-      </div>`;
-  }
-
-  // Recent matches
-  const recEl = document.getElementById('recent-matches');
-  if (matches.length === 0) {
-    recEl.innerHTML = '<div class="empty">Sin partidos registrados</div>';
-  } else {
-    recEl.innerHTML = [...matches].reverse().slice(0,7).map(m => `
-      <div class="pj-row">
-        <div>
-          <div class="pj-left">${m.home?'🏠':'✈️'} ${m.rival}</div>
-          <div class="pj-date">${m.date} · ${m.comp}</div>
-        </div>
-        <div>
-          <div class="pj-score" style="color:${resultColor(m.result)}">${m.gf}–${m.ga}</div>
-          <div class="pj-result" style="color:${resultColor(m.result)};text-align:right">${resultLabel(m.result)}</div>
-        </div>
-      </div>`).join('');
-  }
-
-  // Top scorers
-  const scorers = squad.map(p => ({...p, sg: ss[p.id]?.goals||0})).filter(p=>p.sg>0).sort((a,b)=>b.sg-a.sg).slice(0,5);
-  document.getElementById('top-scorers').innerHTML = scorers.length===0
-    ? '<div class="empty">Sin goles registrados</div>'
-    : scorers.map((p,i) => `
-      <div class="top-row">
-        <div class="top-rank" style="color:${i===0?'#FFD700':'#333'}">${i+1}</div>
-        <div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div>
-        <div class="top-val" style="color:#FFD700">${p.sg}</div>
-      </div>`).join('');
-
-  // Top assists
-  const assisters = squad.map(p => ({...p, sa: ss[p.id]?.assists||0})).filter(p=>p.sa>0).sort((a,b)=>b.sa-a.sa).slice(0,5);
-  document.getElementById('top-assists').innerHTML = assisters.length===0
-    ? '<div class="empty">Sin asistencias registradas</div>'
-    : assisters.map((p,i) => `
-      <div class="top-row">
-        <div class="top-rank" style="color:${i===0?'#FFD700':'#333'}">${i+1}</div>
-        <div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div>
-        <div class="top-val" style="color:#3B82F6">${p.sa}</div>
-      </div>`).join('');
-}
-
-function renderMatches() {
-  const el = document.getElementById('matches-list');
-  if (matches.length === 0) {
-    el.innerHTML = `
-      <div class="card" style="text-align:center;padding:60px">
-        <div style="font-size:48px;margin-bottom:14px">⚽</div>
-        <div style="font-size:22px;color:#FFD700;margin-bottom:8px">Sin Partidos Aún</div>
-        <div style="font-family:Inter,sans-serif;font-size:14px;color:#aaa;margin-bottom:20px">Registra el primer partido de la temporada</div>
-        <button class="gb" onclick="openAddMatch()">+ Registrar Partido</button>
-      </div>`;
+  const pb=document.getElementById('perf-bars');
+  if(!ts.pj){
+    pb.innerHTML='<div class="empty">Sin partidos aún</div>';
+    document.getElementById('comp-breakdown').innerHTML='';
+    document.getElementById('recent-matches').innerHTML='<div class="empty">Sin partidos aún</div>';
+    document.getElementById('top-scorers').innerHTML='<div class="empty">Sin datos</div>';
+    document.getElementById('top-assists').innerHTML='<div class="empty">Sin datos</div>';
     return;
   }
-  el.innerHTML = [...matches].reverse().map(m => {
-    const goalsHtml = (m.scorers||[]).filter(Boolean).map((sid,i) => {
-      const aid = m.assisters?.[i];
-      return `<span class="chip">⚽ ${getPlayerName(sid)}${aid?' · 🎯 '+getPlayerName(aid):''}</span>`;
+
+  pb.innerHTML=[['Victorias',ts.w,'#4ade80'],['Empates',ts.d,'#facc15'],['Derrotas',ts.l,'#f87171']].map(([lb,val,c])=>`
+    <div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-family:Inter,sans-serif;font-size:13px;margin-bottom:3px">
+        <span style="color:#ccc">${lb}</span><span style="color:${c};font-weight:600">${val}</span>
+      </div>
+      <div class="pb"><div class="pf" style="width:${Math.round(val/ts.pj*100)}%;background:${c}"></div></div>
+    </div>`).join('');
+
+  const comps=[...new Set(matches.map(m=>m.comp))];
+  document.getElementById('comp-breakdown').innerHTML=`
+    <div style="margin-top:16px;border-top:1px solid #252525;padding-top:12px">
+      <div style="font-family:Inter,sans-serif;font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Por Competición</div>
+      ${comps.map(c=>{
+        const cm=matches.filter(m=>m.comp===c);
+        const cw=cm.filter(m=>m.result==='W').length, cd=cm.filter(m=>m.result==='D').length;
+        return`<div class="comp-row"><span>${c}</span><span>${cm.length} PJ · <span style="color:#4ade80">${cw}V</span> · <span style="color:#facc15">${cd}E</span></span></div>`;
+      }).join('')}
+    </div>`;
+
+  document.getElementById('recent-matches').innerHTML=[...matches].reverse().slice(0,7).map(m=>`
+    <div class="pj-row">
+      <div><div class="pj-left">${m.home?'🏠':'✈️'} ${m.rival}</div><div class="pj-date">${m.date||'—'} · ${m.comp}</div></div>
+      <div><div class="pj-score" style="color:${rc(m.result)}">${m.gf}–${m.ga}</div><div class="pj-result-lbl" style="color:${rc(m.result)}">${rl(m.result)}</div></div>
+    </div>`).join('');
+
+  const sc=squad.map(p=>({...p,sg:ss[p.id]?.g||0})).filter(p=>p.sg>0).sort((a,b)=>b.sg-a.sg).slice(0,5);
+  document.getElementById('top-scorers').innerHTML=sc.length
+    ?sc.map((p,i)=>`<div class="top-row"><span class="top-rank${i===0?' gold':''}">${i+1}</span><div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div><span class="top-val" style="color:#FFD700">${p.sg}</span></div>`).join('')
+    :'<div class="empty">Sin goles aún</div>';
+
+  const as=squad.map(p=>({...p,sa:ss[p.id]?.a||0})).filter(p=>p.sa>0).sort((a,b)=>b.sa-a.sa).slice(0,5);
+  document.getElementById('top-assists').innerHTML=as.length
+    ?as.map((p,i)=>`<div class="top-row"><span class="top-rank${i===0?' gold':''}">${i+1}</span><div style="flex:1"><div class="top-name">${p.name}</div><div class="top-pos">#${p.number} · ${p.position}</div></div><span class="top-val" style="color:#60A5FA">${p.sa}</span></div>`).join('')
+    :'<div class="empty">Sin asistencias aún</div>';
+}
+
+/* ── PARTIDOS ── */
+function renderMatches(){
+  const el=document.getElementById('matches-list');
+  if(!matches.length){
+    el.innerHTML=`<div class="card" style="text-align:center;padding:50px 20px">
+      <div style="font-size:40px;margin-bottom:12px">⚽</div>
+      <div style="font-size:20px;color:#FFD700;margin-bottom:8px">Sin Partidos Aún</div>
+      <div style="font-family:Inter,sans-serif;font-size:14px;color:#aaa;margin-bottom:18px">Registra el primer partido</div>
+      <button class="gb" onclick="openAddMatch()">+ Registrar</button></div>`;
+    return;
+  }
+  el.innerHTML=[...matches].reverse().map(m=>{
+    const goals=(m.scorers||[]).filter(Boolean).map((sid,i)=>{
+      const aid=m.assisters?.[i];
+      return`<span class="chip">⚽ ${pn(sid)}${aid?` · 🎯 ${pn(aid)}`:''}</span>`;
     }).join('');
-    return `
-      <div class="card match-card" style="margin-bottom:10px">
-        <div class="match-score-wrap">
-          <div class="match-score" style="color:${resultColor(m.result)}">${m.gf}–${m.ga}</div>
-          <div class="match-label" style="color:${resultColor(m.result)}">${resultLabel(m.result)}</div>
-        </div>
-        <div class="match-info">
-          <div class="match-rival">${m.home?'🏠':'✈️'} vs ${m.rival}</div>
-          <div class="match-meta">${m.date} · ${m.comp}</div>
-          ${goalsHtml ? `<div style="margin-top:8px">${goalsHtml}</div>` : ''}
-          ${m.notes ? `<div class="match-notes">${m.notes}</div>` : ''}
-        </div>
-        <div class="match-actions">
-          <button class="ob" onclick="openEditMatch(${m.id})">Editar</button>
-          <button class="rb" onclick="deleteMatch(${m.id})">Borrar</button>
-        </div>
-      </div>`;
+    return`<div class="match-card">
+      <div class="match-score-wrap">
+        <div class="match-score" style="color:${rc(m.result)}">${m.gf}–${m.ga}</div>
+        <div class="match-result-lbl" style="color:${rc(m.result)}">${rl(m.result)}</div>
+      </div>
+      <div class="match-info">
+        <div class="match-rival">${m.home?'🏠':'✈️'} vs ${m.rival}</div>
+        <div class="match-meta">${m.date||'—'} · ${m.comp}</div>
+        ${goals?`<div class="match-goals">${goals}</div>`:''}
+        ${m.notes?`<div class="match-notes-txt">${m.notes}</div>`:''}
+      </div>
+      <div class="match-actions">
+        <button class="ob" onclick="openEditMatch(${m.id})">Editar</button>
+        <button class="rb" onclick="deleteMatch(${m.id})">Borrar</button>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function renderSquad() {
-  const ss = getSeasonStats();
-  const el = document.getElementById('squad-list');
-  const groups = [['POR','Porteros'],['DEF','Defensas'],['MED','Mediocampistas'],['DEL','Delanteros']];
-  el.innerHTML = groups.map(([pos, label]) => {
-    const players = squad.filter(p => p.position === pos);
-    if (!players.length) return '';
-    return `
-      <div style="margin-bottom:26px">
-        <div style="display:flex;align-items:center;margin-bottom:10px">
-          <span class="pos-dot" style="background:${POS_COLORS[pos]}"></span>
-          <span class="pos-label" style="color:${POS_COLORS[pos]}">${label}</span>
-        </div>
-        <div style="background:#111;border:1px solid #1a1a1a;border-radius:10px;overflow:hidden">
-          <table>
-            <thead><tr>
-              <th>#</th><th>Jugador</th>
-              <th style="color:#FFD700">⚽ Temp</th>
-              <th style="color:#3B82F6">🎯 Temp</th>
-              <th>⚽ Carrera</th>
-              <th>🎯 Carrera</th>
-              <th>PJ Carrera</th>
-              <th></th>
-            </tr></thead>
-            <tbody>
-              ${players.map(p => {
-                const sg = ss[p.id]?.goals||0;
-                const sa = ss[p.id]?.assists||0;
-                return `<tr>
-                  <td class="player-num">${p.number}</td>
-                  <td class="player-name">${p.name}</td>
-                  <td><span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:${sg>0?'#FFD700':'#2a2a2a'}">${sg}</span></td>
-                  <td><span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:${sa>0?'#3B82F6':'#2a2a2a'}">${sa}</span></td>
-                  <td class="career-stat">${p.cg+sg}</td>
-                  <td class="career-stat">${p.ca+sa}</td>
-                  <td style="color:#bbb">${p.cp + (ss[p.id]?.apps||0)}</td>
-                  <td>
-                    <div style="display:flex;gap:6px">
-                      <button class="ob" onclick="openEditPlayer(${p.id})">Editar</button>
-                      <button class="rb" onclick="deletePlayer(${p.id})">✕</button>
-                    </div>
-                  </td>
-                </tr>`;
-              }).join('')}
-            </tbody>
-          </table>
-        </div>
-      </div>`;
+/* ── PLANTILLA ── */
+function renderSquad(){
+  const ss=sStats();
+  const el=document.getElementById('squad-list');
+  el.innerHTML=[['POR','Porteros'],['DEF','Defensas'],['MED','Mediocampistas'],['DEL','Delanteros']].map(([pos,label])=>{
+    const players=squad.filter(p=>p.position===pos);
+    if(!players.length)return'';
+    const col=PC[pos];
+    return`<div style="margin-bottom:24px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:${col}"></div>
+        <span style="font-size:14px;letter-spacing:2px;color:${col}">${label}</span>
+      </div>
+      <div class="table-wrap squad-table"><table>
+        <thead><tr>
+          <th>#</th><th>Jugador</th>
+          <th style="color:#FFD700">⚽ Temp</th>
+          <th style="color:#60A5FA">🎯 Temp</th>
+          <th style="color:#34D399">🏃 Temp</th>
+          <th>⚽ Carrera</th>
+          <th>🎯 Carrera</th>
+          <th>🏃 Carrera</th>
+          <th></th>
+        </tr></thead>
+        <tbody>${players.map(p=>{
+          const sg=ss[p.id]?.g||0,sa=ss[p.id]?.a||0,sp=ss[p.id]?.p||0;
+          return`<tr>
+            <td class="player-num">${p.number}</td>
+            <td class="player-name">${p.name}</td>
+            <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sg>0?'#FFD700':'#333'}">${sg}</b></td>
+            <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sa>0?'#60A5FA':'#333'}">${sa}</b></td>
+            <td><b style="font-family:'Bebas Neue';font-size:19px;color:${sp>0?'#34D399':'#333'}">${sp}</b></td>
+            <td class="career-stat">${p.cg+sg}</td>
+            <td class="career-stat">${p.ca+sa}</td>
+            <td class="career-stat">${p.cp+sp}</td>
+            <td><div style="display:flex;gap:5px">
+              <button class="ob" onclick="openEditPlayer(${p.id})">Editar</button>
+              <button class="rb" onclick="deletePlayer(${p.id})">✕</button>
+            </div></td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table></div>
+      <div class="player-card-mobile">${players.map(p=>{
+        const sg=ss[p.id]?.g||0,sa=ss[p.id]?.a||0,sp=ss[p.id]?.p||0;
+        return`<div class="pc">
+          <div class="pc-top">
+            <div class="pc-num">${p.number}</div>
+            <div><div class="pc-name">${p.name}</div><div class="pc-pos">${label}</div></div>
+          </div>
+          <div class="pc-section-lbl">Temporada actual</div>
+          <div class="pc-stats">
+            <div class="pc-stat"><div class="pc-stat-val" style="color:#FFD700">${sg}</div><div class="pc-stat-lbl">Goles</div></div>
+            <div class="pc-stat"><div class="pc-stat-val" style="color:#60A5FA">${sa}</div><div class="pc-stat-lbl">Asist.</div></div>
+            <div class="pc-stat"><div class="pc-stat-val" style="color:#34D399">${sp}</div><div class="pc-stat-lbl">PJ</div></div>
+          </div>
+          <div class="pc-section-lbl">Carrera en el club</div>
+          <div class="pc-career">
+            <div class="pc-career-item"><div class="pc-career-val">${p.cg+sg}</div><div class="pc-career-lbl">Goles</div></div>
+            <div class="pc-career-item"><div class="pc-career-val">${p.ca+sa}</div><div class="pc-career-lbl">Asist.</div></div>
+            <div class="pc-career-item"><div class="pc-career-val">${p.cp+sp}</div><div class="pc-career-lbl">Partidos</div></div>
+          </div>
+          <div class="pc-actions">
+            <button class="ob" onclick="openEditPlayer(${p.id})">Editar</button>
+            <button class="rb" onclick="deletePlayer(${p.id})">Eliminar</button>
+          </div>
+        </div>`;
+      }).join('')}</div>
+    </div>`;
   }).join('');
 }
 
-// ─── MATCH MODAL ─────────────────────────────────────────────────────────────
-function openAddMatch() {
-  editingMatchId = null;
-  tempGoals = [];
-  tempParticipants = new Set();
-  document.getElementById('match-modal-title').textContent = 'Registrar Partido';
-  document.getElementById('m-date').value = '';
-  document.getElementById('m-rival').value = '';
-  document.getElementById('m-gf').value = '';
-  document.getElementById('m-ga').value = '';
-  document.getElementById('m-home').value = '1';
-  document.getElementById('m-comp').value = 'Liga MX';
-  document.getElementById('m-notes').value = '';
-  populateScorerSelects();
-  renderGoalsList();
-  renderParticipantsGrid();
+/* ── MATCH MODAL ── */
+let eMid=null,tGoals=[],tPart=new Set();
+
+function openAddMatch(){
+  eMid=null;tGoals=[];tPart=new Set();
+  document.getElementById('match-modal-title').textContent='Registrar Partido';
+  ['m-date','m-rival','m-notes'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('m-gf').value='';document.getElementById('m-ga').value='';
+  document.getElementById('m-home').value='1';document.getElementById('m-comp').value='Liga MX';
+  popSelects();renderGoals();renderPart();
   document.getElementById('match-modal').classList.remove('hidden');
 }
 
-function openEditMatch(id) {
-  const m = matches.find(x => x.id === id);
-  if (!m) return;
-  editingMatchId = id;
-  tempGoals = (m.scorers||[]).map((s,i) => ({ scorer: s, assist: m.assisters?.[i]||null }));
-  tempParticipants = new Set(m.participants||[]);
-  document.getElementById('match-modal-title').textContent = 'Editar Partido';
-  document.getElementById('m-date').value = m.date;
-  document.getElementById('m-rival').value = m.rival;
-  document.getElementById('m-gf').value = m.gf;
-  document.getElementById('m-ga').value = m.ga;
-  document.getElementById('m-home').value = m.home ? '1' : '0';
-  document.getElementById('m-comp').value = m.comp;
-  document.getElementById('m-notes').value = m.notes||'';
-  populateScorerSelects();
-  renderGoalsList();
-  renderParticipantsGrid();
+function openEditMatch(id){
+  const m=matches.find(x=>x.id===id);if(!m)return;
+  eMid=id;
+  tGoals=(m.scorers||[]).map((s,i)=>({scorer:s,assist:m.assisters?.[i]||null}));
+  tPart=new Set(m.participants||[]);
+  document.getElementById('match-modal-title').textContent='Editar Partido';
+  document.getElementById('m-date').value=m.date||'';
+  document.getElementById('m-rival').value=m.rival;
+  document.getElementById('m-gf').value=m.gf;document.getElementById('m-ga').value=m.ga;
+  document.getElementById('m-home').value=m.home?'1':'0';
+  document.getElementById('m-comp').value=m.comp;
+  document.getElementById('m-notes').value=m.notes||'';
+  popSelects();renderGoals();renderPart();
   document.getElementById('match-modal').classList.remove('hidden');
 }
 
-function closeMatchModal() {
-  document.getElementById('match-modal').classList.add('hidden');
+function closeMatchModal(){document.getElementById('match-modal').classList.add('hidden');}
+
+function popSelects(){
+  const o=squad.map(p=>`<option value="${p.id}">#${p.number} ${p.name}</option>`).join('');
+  document.getElementById('g-scorer').innerHTML='<option value="">— Seleccionar —</option>'+o;
+  document.getElementById('g-assist').innerHTML='<option value="">— Ninguno —</option>'+o;
 }
 
-function populateScorerSelects() {
-  const opts = squad.map(p => `<option value="${p.id}">#${p.number} ${p.name}</option>`).join('');
-  document.getElementById('g-scorer').innerHTML = '<option value="">— Seleccionar —</option>' + opts;
-  document.getElementById('g-assist').innerHTML = '<option value="">— Ninguno —</option>' + opts;
+function addGoal(){
+  const sid=parseInt(document.getElementById('g-scorer').value);if(!sid)return;
+  const aid=parseInt(document.getElementById('g-assist').value)||null;
+  tGoals.push({scorer:sid,assist:aid});
+  tPart.add(sid);if(aid)tPart.add(aid);
+  document.getElementById('g-scorer').value='';document.getElementById('g-assist').value='';
+  renderGoals();renderPart();
 }
 
-function addGoal() {
-  const sid = parseInt(document.getElementById('g-scorer').value);
-  if (!sid) return;
-  const aid = parseInt(document.getElementById('g-assist').value) || null;
-  tempGoals.push({ scorer: sid, assist: aid });
-  tempParticipants.add(sid);
-  if (aid) tempParticipants.add(aid);
-  document.getElementById('g-scorer').value = '';
-  document.getElementById('g-assist').value = '';
-  renderGoalsList();
-  renderParticipantsGrid();
-}
+function removeGoal(i){tGoals.splice(i,1);renderGoals();renderPart();}
 
-function removeGoal(i) {
-  tempGoals.splice(i, 1);
-  renderGoalsList();
-  renderParticipantsGrid();
-}
-
-function renderGoalsList() {
-  document.getElementById('goals-list-display').innerHTML = tempGoals.map((g,i) => `
+function renderGoals(){
+  document.getElementById('goals-list-display').innerHTML=tGoals.map((g,i)=>`
     <div class="goal-row">
       <span class="goal-num">${i+1}</span>
-      <span class="goal-name">⚽ ${getPlayerName(g.scorer)}</span>
-      ${g.assist ? `<span class="goal-assist">🎯 ${getPlayerName(g.assist)}</span>` : ''}
+      <span class="goal-name">⚽ ${pn(g.scorer)}</span>
+      ${g.assist?`<span class="goal-assist">🎯 ${pn(g.assist)}</span>`:''}
       <button class="del-btn" onclick="removeGoal(${i})">✕</button>
     </div>`).join('');
 }
 
-function renderParticipantsGrid() {
-  const autoIds = new Set();
-  tempGoals.forEach(g => { if(g.scorer) autoIds.add(g.scorer); if(g.assist) autoIds.add(g.assist); });
-  document.getElementById('participants-grid').innerHTML = squad.map(p => {
-    const isAuto = autoIds.has(p.id);
-    const checked = isAuto || tempParticipants.has(p.id);
-    if (isAuto && !tempParticipants.has(p.id)) tempParticipants.add(p.id);
-    return `<label style="display:flex;align-items:center;gap:6px;cursor:pointer;background:${checked?'#1a2e1a':'#1c1c1c'};border:1px solid ${checked?'#336633':'#2e2e2e'};border-radius:6px;padding:5px 8px;font-family:Inter,sans-serif;font-size:12px;color:${checked?'#f0f0f0':'#888'};transition:all .2s">
-      <input type="checkbox" ${checked?'checked':''} ${isAuto?'disabled':''} onchange="toggleParticipant(${p.id}, this.checked)" style="width:13px;height:13px;accent-color:#10B981;flex-shrink:0"/>
-      <span>#${p.number} ${p.name}${isAuto?' ⚽':''}</span>
+function renderPart(){
+  const auto=new Set();
+  tGoals.forEach(g=>{if(g.scorer)auto.add(g.scorer);if(g.assist)auto.add(g.assist);});
+  auto.forEach(id=>tPart.add(id));
+  document.getElementById('participants-grid').innerHTML=squad.map(p=>{
+    const isA=auto.has(p.id),ck=tPart.has(p.id);
+    return`<label class="pchk${ck?' on':''}${isA?' auto':''}">
+      <input type="checkbox" ${ck?'checked':''} ${isA?'disabled':''} onchange="toggleP(${p.id},this.checked)" style="width:13px;height:13px;accent-color:#4ade80;flex-shrink:0"/>
+      <span>#${p.number} ${p.name.split(' ')[0]}${isA?' ⚽':''}</span>
     </label>`;
   }).join('');
 }
 
-function toggleParticipant(id, checked) {
-  if (checked) tempParticipants.add(id);
-  else tempParticipants.delete(id);
-  renderParticipantsGrid();
+function toggleP(id,ck){ck?tPart.add(id):tPart.delete(id);renderPart();}
+function selectAllP(){squad.forEach(p=>tPart.add(p.id));renderPart();}
+function clearP(){
+  const a=new Set();tGoals.forEach(g=>{if(g.scorer)a.add(g.scorer);if(g.assist)a.add(g.assist);});
+  tPart=new Set(a);renderPart();
 }
 
-function selectAllParticipants() {
-  squad.forEach(p => tempParticipants.add(p.id));
-  renderParticipantsGrid();
-}
-
-function clearParticipants() {
-  const autoIds = new Set();
-  tempGoals.forEach(g => { if(g.scorer) autoIds.add(g.scorer); if(g.assist) autoIds.add(g.assist); });
-  tempParticipants = new Set(autoIds);
-  renderParticipantsGrid();
-}
-
-function saveMatch() {
-  const rival = document.getElementById('m-rival').value.trim();
-  const gf = parseInt(document.getElementById('m-gf').value);
-  const ga = parseInt(document.getElementById('m-ga').value);
-  if (!rival || isNaN(gf) || isNaN(ga)) return;
-  const result = gf > ga ? 'W' : gf === ga ? 'D' : 'L';
-  const match = {
-    id: editingMatchId || Date.now(),
-    date: document.getElementById('m-date').value,
-    rival,
-    gf, ga, result,
-    home: document.getElementById('m-home').value === '1',
-    comp: document.getElementById('m-comp').value,
-    notes: document.getElementById('m-notes').value.trim(),
-    scorers: tempGoals.map(g => g.scorer),
-    assisters: tempGoals.map(g => g.assist),
-    participants: [...tempParticipants],
+function saveMatch(){
+  const rival=document.getElementById('m-rival').value.trim();
+  const gf=parseInt(document.getElementById('m-gf').value);
+  const ga=parseInt(document.getElementById('m-ga').value);
+  if(!rival||isNaN(gf)||isNaN(ga))return;
+  const m={
+    id:eMid||Date.now(),
+    date:document.getElementById('m-date').value,
+    rival,gf,ga,
+    result:gf>ga?'W':gf===ga?'D':'L',
+    home:document.getElementById('m-home').value==='1',
+    comp:document.getElementById('m-comp').value,
+    notes:document.getElementById('m-notes').value.trim(),
+    scorers:tGoals.map(g=>g.scorer),
+    assisters:tGoals.map(g=>g.assist),
+    participants:[...tPart],
   };
-  if (editingMatchId) {
-    const idx = matches.findIndex(m => m.id === editingMatchId);
-    if (idx !== -1) matches[idx] = match;
-  } else {
-    matches.push(match);
-  }
-  saveState();
-  closeMatchModal();
-  renderAll();
+  if(eMid){const i=matches.findIndex(x=>x.id===eMid);if(i!==-1)matches[i]=m;}
+  else matches.push(m);
+  save();closeMatchModal();renderAll();
 }
 
-function deleteMatch(id) {
-  if (!confirm('¿Borrar este partido?')) return;
-  matches = matches.filter(m => m.id !== id);
-  saveState();
-  renderAll();
+function deleteMatch(id){
+  if(!confirm('¿Borrar este partido?'))return;
+  matches=matches.filter(m=>m.id!==id);save();renderAll();
 }
 
-// ─── PLAYER MODAL ────────────────────────────────────────────────────────────
-function openAddPlayer() {
-  editingPlayerId = null;
-  document.getElementById('player-modal-title').textContent = 'Añadir Jugador';
-  document.getElementById('p-name').value = '';
-  document.getElementById('p-number').value = '';
-  document.getElementById('p-pos').value = 'DEL';
-  document.getElementById('p-cg').value = '0';
-  document.getElementById('p-ca').value = '0';
-  document.getElementById('p-cp').value = '0';
+/* ── PLAYER MODAL ── */
+let ePid=null;
+
+function openAddPlayer(){
+  ePid=null;
+  document.getElementById('player-modal-title').textContent='Añadir Jugador';
+  document.getElementById('p-name').value='';document.getElementById('p-number').value='';
+  document.getElementById('p-pos').value='DEL';
+  document.getElementById('p-cg').value='0';document.getElementById('p-ca').value='0';document.getElementById('p-cp').value='0';
   document.getElementById('player-modal').classList.remove('hidden');
 }
 
-function openEditPlayer(id) {
-  const p = squad.find(x => x.id === id);
-  if (!p) return;
-  editingPlayerId = id;
-  document.getElementById('player-modal-title').textContent = 'Editar Jugador';
-  document.getElementById('p-name').value = p.name;
-  document.getElementById('p-number').value = p.number;
-  document.getElementById('p-pos').value = p.position;
-  document.getElementById('p-cg').value = p.cg;
-  document.getElementById('p-ca').value = p.ca;
-  document.getElementById('p-cp').value = p.cp;
+function openEditPlayer(id){
+  const p=squad.find(x=>x.id===id);if(!p)return;
+  ePid=id;
+  document.getElementById('player-modal-title').textContent='Editar Jugador';
+  document.getElementById('p-name').value=p.name;document.getElementById('p-number').value=p.number;
+  document.getElementById('p-pos').value=p.position;
+  document.getElementById('p-cg').value=p.cg;document.getElementById('p-ca').value=p.ca;document.getElementById('p-cp').value=p.cp;
   document.getElementById('player-modal').classList.remove('hidden');
 }
 
-function closePlayerModal() {
-  document.getElementById('player-modal').classList.add('hidden');
-}
+function closePlayerModal(){document.getElementById('player-modal').classList.add('hidden');}
 
-function savePlayer() {
-  const name = document.getElementById('p-name').value.trim();
-  if (!name) return;
-  const player = {
-    id: editingPlayerId || Date.now(),
-    name,
-    number: parseInt(document.getElementById('p-number').value) || 0,
-    position: document.getElementById('p-pos').value,
-    cg: parseInt(document.getElementById('p-cg').value) || 0,
-    ca: parseInt(document.getElementById('p-ca').value) || 0,
-    cp: parseInt(document.getElementById('p-cp').value) || 0,
+function savePlayer(){
+  const name=document.getElementById('p-name').value.trim();if(!name)return;
+  const p={
+    id:ePid||Date.now(),name,
+    number:parseInt(document.getElementById('p-number').value)||0,
+    position:document.getElementById('p-pos').value,
+    cg:parseInt(document.getElementById('p-cg').value)||0,
+    ca:parseInt(document.getElementById('p-ca').value)||0,
+    cp:parseInt(document.getElementById('p-cp').value)||0,
   };
-  if (editingPlayerId) {
-    const idx = squad.findIndex(p => p.id === editingPlayerId);
-    if (idx !== -1) squad[idx] = player;
-  } else {
-    squad.push(player);
+  if(ePid){const i=squad.findIndex(x=>x.id===ePid);if(i!==-1)squad[i]=p;}
+  else squad.push(p);
+  save();closePlayerModal();renderAll();
+}
+
+function deletePlayer(id){
+  if(!confirm('¿Eliminar jugador?'))return;
+  squad=squad.filter(p=>p.id!==id);save();renderAll();
+}
+
+/* ── EXPORT / IMPORT ── */
+function openExport(){
+  const data=JSON.stringify({squad,matches});
+  const b64=btoa(unescape(encodeURIComponent(data)));
+  document.getElementById('exp-output').value=b64;
+  document.getElementById('imp-input').value='';
+  document.getElementById('exp-modal').classList.remove('hidden');
+}
+
+function closeExport(){document.getElementById('exp-modal').classList.add('hidden');}
+
+function copyData(){
+  const ta=document.getElementById('exp-output');
+  ta.select();ta.setSelectionRange(0,99999);
+  try{
+    navigator.clipboard.writeText(ta.value).then(()=>alert('✅ Copiado al portapapeles'));
+  }catch(e){
+    document.execCommand('copy');
+    alert('✅ Copiado');
   }
-  saveState();
-  closePlayerModal();
-  renderAll();
 }
 
-function deletePlayer(id) {
-  if (!confirm('¿Eliminar este jugador?')) return;
-  squad = squad.filter(p => p.id !== id);
-  saveState();
-  renderAll();
+function importData(){
+  const raw=document.getElementById('imp-input').value.trim();
+  if(!raw){alert('Pega el código primero.');return;}
+  if(!confirm('⚠️ Esto reemplazará TODOS tus datos actuales. ¿Continuar?'))return;
+  try{
+    const data=JSON.parse(decodeURIComponent(escape(atob(raw))));
+    if(!data.squad||!data.matches)throw new Error('Formato inválido');
+    squad=data.squad;matches=data.matches;
+    save();closeExport();renderAll();
+    alert('✅ Datos importados correctamente');
+  }catch(e){
+    alert('❌ Código inválido. Asegúrate de copiar el código completo.');
+  }
 }
 
-// Close modals clicking outside
-document.getElementById('match-modal').addEventListener('click', function(e) {
-  if (e.target === this) closeMatchModal();
-});
-document.getElementById('player-modal').addEventListener('click', function(e) {
-  if (e.target === this) closePlayerModal();
-});
-
-// ─── INIT ────────────────────────────────────────────────────────────────────
 renderAll();
 </script>
 </body>
